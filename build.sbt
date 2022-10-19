@@ -8,3 +8,12 @@ Test / scalaSource := baseDirectory.value / "src/test"
 
 // ZIO
 libraryDependencies += "dev.zio" %% "zio" % "2.0.2"
+
+// ZIO Test
+libraryDependencies ++= Seq(
+    "dev.zio" %% "zio-test"          % "2.0.2" % Test,
+    "dev.zio" %% "zio-test-sbt"      % "2.0.2" % Test,
+    "dev.zio" %% "zio-test-magnolia" % "2.0.2" % Test
+)
+
+testFrameworks += new TestFramework(implClassNames = "zio.test.sbt.ZTestFramework")
