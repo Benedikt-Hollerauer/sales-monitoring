@@ -1,18 +1,20 @@
 package coreTest.useCaseTest
 
 import zio.*
-import zio.test.{test, *}
+import zio.test.*
 
 object CreateSaleUseCaseTest extends ZIOSpecDefault:
 
-    def spec = suite("CreateSale suite")(
-        test("CreateSale.createValidateSaveGetSale should return a ZIO[CreateSaleInput, CreateSaleUseCaseError, SaleEntity] when correct parameters are provided") {
-            val createSaleUseCase = CreateSaleUseCase(
-                input = CreateSaleInputMock,
-                saleRepository = SaleRepositoryMock
+    def spec =
+        suite("CreateSale suite")(
+            test("CreateSale.createValidateSaveGetSale should return a SaleEntity when correct parameters are provided")(
+                CreateSaleUseCase(
+                    input = CreateSaleInputMock,
+                    saleRepository = SaleRepositoryMock
+                )
+                    .createValidateSaveGetSale
+                    .flatMap(saleEntity =>
+                        assertTrue(saleEntity == SaleEntityMock)
+                    )
             )
-            for
-                computationResult <- createSaleUseCase.createValidateSaveGetSale
-            yield assert(computationResult)(Assertion.equalTo(SaleEntityMock))
-        }
-    )
+        )
