@@ -1,5 +1,6 @@
 package mock.repositoryMock
 
+import core.entity.SaleEntity
 import boundary.repository.SaleRepository
 import zio.*
 

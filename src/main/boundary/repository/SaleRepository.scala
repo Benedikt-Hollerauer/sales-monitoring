@@ -1,5 +1,6 @@
 package boundary.repository
 
+import core.entity.SaleEntity
 import zio.*
 
 trait SaleRepository:

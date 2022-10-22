@@ -1,6 +1,7 @@
 package coreTest.useCaseTest
 
 import core.useCase.CreateSaleUseCase
+import core.entity.SaleEntity
 import mock.inputMock.CreateSaleInputMock
 import mock.repositoryMock.SaleRepositoryMock
 import zio.*
