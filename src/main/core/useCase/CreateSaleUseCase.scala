@@ -2,12 +2,21 @@ package core.useCase
 
 import boundary.input.CreateSaleInput
 import boundary.repository.SaleRepository
+import core.entity.SaleEntity
+import error.inputError.CreateSaleInputError
+import error.useCaseError.CreateSaleUseCaseError
+import error.repositoryError.SaleRepositoryError
 import zio.*
 
 case class CreateSaleUseCase private(
     input: CreateSaleInput,
     saleRepository: SaleRepository
-)
+):
+    def createValidateSaveGetSale: IO[CreateSaleUseCaseError, SaleEntity] =
+        for
+            _ <- input.saleEntity.saleTitle.catchAll(titleValueError => ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.TitleConstructionFailed(titleValueError))))
+            mayBeSuccessfulSave <- saleRepository.saveSaleToRepository(input.saleEntity).catchAll(saleRepositoryError => ZIO.fail(CreateSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError)))
+        yield input.saleEntity
 
 object CreateSaleUseCase:
 

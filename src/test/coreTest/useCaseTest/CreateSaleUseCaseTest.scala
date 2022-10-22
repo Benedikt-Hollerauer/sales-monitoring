@@ -6,11 +6,12 @@ import error.useCaseError.CreateSaleUseCaseError
 import error.inputError.CreateSaleInputError
 import error.valueError.TitleValueError
 import error.repositoryError.SaleRepositoryError
-import mock.entityMock.SaleEntityMock
+import mock.entityMock.{SaleEntityMock, SaleEntityTitleFailureMock}
 import mock.inputMock.CreateSaleInputMock
 import mock.repositoryMock.{SaleRepositoryMock, SaleRepositoryFailureMock}
 import zio.*
 import zio.test.*
+import zio.test.Assertion.*
 
 object CreateSaleUseCaseTest extends ZIOSpecDefault:
 
@@ -30,12 +31,12 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                 for
                     createSaleUseCase <- CreateSaleUseCase.from(
                         input = CreateSaleInputMock.copy(
-                            saleEntity = SaleEntityMock
+                            saleEntity = SaleEntityTitleFailureMock
                         ),
                         saleRepository = SaleRepositoryMock
                     )
-                    useCaseResult <- createSaleUseCase.createValidateSaveGetSale
-                yield useCaseResult.catchAll(error => assertTrue(error == CreateSaleUseCaseError.InputFailed(CreateSaleInputError.TitleConstructionFailed(TitleValueError.TitleIsToShort))))
+                    useCaseResult = createSaleUseCase.createValidateSaveGetSale
+                yield assertTrue(useCaseResult == ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.TitleConstructionFailed(TitleValueError.TitleIsToShort("")))))
             ),
 
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed)) when a failure occurred in the SaleRepository")(
@@ -44,7 +45,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                         input = CreateSaleInputMock,
                         saleRepository = SaleRepositoryFailureMock
                     )
-                    useCaseResult <- createSaleUseCase.createValidateSaveGetSale
-                yield useCaseResult.catchAll(error => assertTrue(error == CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(new Exception("error")))))
+                    useCaseResult = createSaleUseCase.createValidateSaveGetSale
+                yield assert(useCaseResult == ZIO.fail(CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(new Exception("error")))))
             )
         )

@@ -6,3 +6,7 @@ import core.value.TitleValue
 object SaleEntityMock extends SaleEntity(
     saleTitle = TitleValue.fromString("saleTitle")
 )
+
+object SaleEntityTitleFailureMock extends SaleEntity(
+    saleTitle = TitleValue.fromString("")
+)

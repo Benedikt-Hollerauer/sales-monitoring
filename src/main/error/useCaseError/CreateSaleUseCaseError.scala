@@ -5,5 +5,5 @@ import error.repositoryError.SaleRepositoryError
 
 enum CreateSaleUseCaseError:
 
-    case InputFailed(createSaleInputError: CreateSaleInputError)
+    case InputFailure(createSaleInputError: CreateSaleInputError)
     case SaleRepositoryFailure(saleRepositoryError: SaleRepositoryError)
