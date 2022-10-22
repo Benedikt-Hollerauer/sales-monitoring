@@ -1,5 +1,8 @@
 package coreTest.useCaseTest
 
+import core.useCase.CreateSaleUseCase
+import mock.inputMock.CreateSaleInputMock
+import mock.repositoryMock.SaleRepositoryMock
 import zio.*
 import zio.test.*
 
@@ -8,7 +11,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
     def spec =
         suite("CreateSale suite")(
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a SaleEntity when correct parameters are provided")(
-                CreateSaleUseCase(
+                CreateSaleUseCase.from(
                     input = CreateSaleInputMock,
                     saleRepository = SaleRepositoryMock
                 )
@@ -19,9 +22,9 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
             ),
 
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.InputError(CreateSaleInputError.TitleConstructionWasUnsuccessful[TitleValueError.TitleIsToShort]]] when a to short CreateSaleInput.saleTitle is provided")(
-                CreateSaleUseCase(
+                CreateSaleUseCase.from(
                     input = CreateSaleInputMock.copy(
-                        saleTitle = ""
+                        saleEntity = SaleEntityMock
                     ),
                     saleRepository = SaleRepositoryMock
                 )
@@ -32,11 +35,11 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
             ),
 
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.SaleRepositoryError(SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful)) when a failure occurred in the SaleRepository")(
-                CreateSaleUseCase(
+                CreateSaleUseCase.from(
                     input = CreateSaleInputMock,
-                    saleRepository = SaleRepositoryMock {
-                        override saveSaleToRepository = SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful(new Exception("error"))
-                    }
+                    saleRepository = SaleRepositoryMock.clone(
+                        override def saveSaleToRepository(sale: SaleEntity): IO[SaleRepositoryError, Unit] = ZIO.fail(SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful(new Exception("error")))
+                    )
                 )
                     .createValidateSaveGetSale
                     .catchAll(failure =>
