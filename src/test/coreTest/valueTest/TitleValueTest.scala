@@ -1,6 +1,7 @@
 package coreTest.valueTest
 
 import core.value.TitleValue
+import error.valueError.TitleValueError
 import zio.*
 import zio.test.*
 
