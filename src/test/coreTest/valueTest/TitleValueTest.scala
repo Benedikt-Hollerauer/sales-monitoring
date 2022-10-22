@@ -1,5 +1,6 @@
 package coreTest.valueTest
 
+import core.value.TitleValue
 import zio.*
 import zio.test.*
 
