@@ -18,7 +18,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     )
             ),
 
-            test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.CreateSaleInputError(TitleValueError.TitleConstructionWasUnsuccessful[TitleIsToShort]]] when a to short CreateSaleInput.saleTitle is provided")(
+            test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.InputError(CreateSaleInputError.TitleConstructionWasUnsuccessful[TitleValueError.TitleIsToShort]]] when a to short CreateSaleInput.saleTitle is provided")(
                 CreateSaleUseCase(
                     input = CreateSaleInputMock.copy(
                         saleTitle = ""
@@ -27,20 +27,20 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                 )
                     .createValidateSaveGetSale
                     .catchAll(failure =>
-                        assertTrue(failure == CreateSaleUseCaseError.TitleConstructionWasUnsuccessful(CreateSa))
+                        assertTrue(failure == CreateSaleUseCaseError.InputError(CreateSaleInputError.TitleConstructionWasUnsuccessful(TitleValueError.TitleIsToShort)))
                     )
             ),
 
-            test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError[SaleRepositoryError[SaveSaleToRepositoryWasUnsuccessful]] when a failure occurred in the SaleRepository")(
+            test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.SaleRepositoryError(SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful)) when a failure occurred in the SaleRepository")(
                 CreateSaleUseCase(
                     input = CreateSaleInputMock,
-                    saleRepository = SaleRepositoryMock.copy(
-                        override saveSaleToRepository = SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful(failure = new Exception("error"))
-                    )
+                    saleRepository = SaleRepositoryMock {
+                        override saveSaleToRepository = SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful(new Exception("error"))
+                    }
                 )
                     .createValidateSaveGetSale
                     .catchAll(failure =>
-                        assertTrue(failure == CreateSaleUseCaseError.SaleRepositoryError(SaveSaleToRepositoryWasUnsuccessful(new Exception("error"))))
+                        assertTrue(failure == CreateSaleUseCaseError.SaleRepositoryError(SaleRepositoryError.SaveSaleToRepositoryWasUnsuccessful(new Exception("error"))))
                     )
             )
         )
