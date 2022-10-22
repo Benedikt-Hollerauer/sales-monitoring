@@ -10,7 +10,7 @@ import zio.test.*
 object CreateSaleUseCaseTest extends ZIOSpecDefault:
 
     def spec =
-        suite("CreateSale suite")(
+        suite("CreateSale test")(
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a SaleEntity when correct parameters are provided")(
                 CreateSaleUseCase.from(
                     input = CreateSaleInputMock,
