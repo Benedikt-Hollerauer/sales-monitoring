@@ -14,8 +14,10 @@ object CreateSaleUseCase:
     def from(
         input: CreateSaleInput,
         saleRepository: SaleRepository
-    ): CreateSaleUseCase =
-        CreateSaleUseCase(
-            input,
-            saleRepository
+    ): UIO[CreateSaleUseCase] =
+        ZIO.succeed(
+            CreateSaleUseCase(
+                input,
+                saleRepository
+            )
         )
