@@ -15,7 +15,7 @@ case class CreateSaleUseCase private(
     def createValidateSaveGetSale: IO[CreateSaleUseCaseError, SaleEntity] =
         for
             _ <- input.saleEntity.saleTitle.catchAll(titleValueError => ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.TitleConstructionFailed(titleValueError))))
-            mayBeSuccessfulSave <- saleRepository.saveSaleToRepository(input.saleEntity).catchAll(saleRepositoryError => ZIO.fail(CreateSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError)))
+            _ <- saleRepository.saveSaleToRepository(input.saleEntity).catchAll(saleRepositoryError => ZIO.fail(CreateSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError)))
         yield input.saleEntity
 
 object CreateSaleUseCase:

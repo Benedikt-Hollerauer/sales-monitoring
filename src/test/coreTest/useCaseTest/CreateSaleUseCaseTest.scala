@@ -8,10 +8,13 @@ import error.valueError.TitleValueError
 import error.repositoryError.SaleRepositoryError
 import mock.entityMock.{SaleEntityMock, SaleEntityTitleFailureMock}
 import mock.inputMock.CreateSaleInputMock
-import mock.repositoryMock.{SaleRepositoryMock, SaleRepositoryFailureMock}
+import mock.repositoryMock.{SaleRepositoryFailureMock, SaleRepositoryMock}
+import mock.MockThrowable
 import zio.*
 import zio.test.*
 import zio.test.Assertion.*
+
+import scala.util.control
 
 object CreateSaleUseCaseTest extends ZIOSpecDefault:
 
@@ -35,8 +38,9 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                         ),
                         saleRepository = SaleRepositoryMock
                     )
-                    useCaseResult = createSaleUseCase.createValidateSaveGetSale
-                yield assertTrue(useCaseResult == ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.TitleConstructionFailed(TitleValueError.TitleIsToShort("")))))
+                    useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
+                    expected <- ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.TitleConstructionFailed(TitleValueError.TitleIsToShort("")))).cause
+                yield assertTrue(useCaseResult == expected)
             ),
 
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed)) when a failure occurred in the SaleRepository")(
@@ -45,7 +49,8 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                         input = CreateSaleInputMock,
                         saleRepository = SaleRepositoryFailureMock
                     )
-                    useCaseResult = createSaleUseCase.createValidateSaveGetSale
-                yield assert(useCaseResult == ZIO.fail(CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(new Exception("error")))))
+                    useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
+                    expected <- ZIO.fail(CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(MockThrowable))).cause
+                yield assertTrue(useCaseResult == expected)
             )
         )

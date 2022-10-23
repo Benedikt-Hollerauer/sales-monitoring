@@ -19,20 +19,20 @@ object TitleValueTest extends ZIOSpecDefault:
             ),
 
             test("TitleValue.fromString should return a ZIO with a TitleValueError.TitleIsToShort when a to short title is provided")(
-                TitleValue.fromString(
-                    mayBeTitle = ""
-                )
-                    .flatMap(mayBeTitle =>
-                        assertTrue(mayBeTitle == TitleValueError.TitleIsToShort(""))
-                    )
+                for
+                    mayBeTitleValue <- TitleValue.fromString(
+                        mayBeTitle = ""
+                    ).cause
+                    expected <- ZIO.fail(TitleValueError.TitleIsToShort("")).cause
+                yield assertTrue(mayBeTitleValue == expected)
             ),
 
             test("TitleValue.fromString should return a ZIO with a TitleValueError.TitleIsToLong when a to long title is provided")(
-                TitleValue.fromString(
-                    mayBeTitle = "askjiowehnoinvsdcohnfgioewoinsdvjfioweoifnhsdoijfiepwojfiosdnonview"
-                )
-                    .flatMap(mayBeTitle =>
-                        assertTrue(mayBeTitle == TitleValueError.TitleIsToLong("askjiowehnoinvsdcohnfgioewoinsdvjfioweoifnhsdoijfiepwojfiosdnonview"))
-                    )
+                for
+                    mayBeTitleValue <- TitleValue.fromString(
+                        mayBeTitle = "GW5FTy3GtEtMrDjAZbFfVadNXUYEbbkcHEMC3fkqeXFhfmibVbvCRcMJ4f23Un7bnGqNgNZYj5r79mWAbPZBjUK7r43zNtGWmAdpVqBfzihGiBSeaHq"
+                    ).cause
+                    expected <- ZIO.fail(TitleValueError.TitleIsToLong("GW5FTy3GtEtMrDjAZbFfVadNXUYEbbkcHEMC3fkqeXFhfmibVbvCRcMJ4f23Un7bnGqNgNZYj5r79mWAbPZBjUK7r43zNtGWmAdpVqBfzihGiBSeaHq")).cause
+                yield assertTrue(mayBeTitleValue == expected)
             ),
         )
