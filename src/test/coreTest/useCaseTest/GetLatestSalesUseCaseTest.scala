@@ -1,5 +1,6 @@
 package coreTest.useCaseTest
 
+import core.useCase.GetLatestSalesUseCase
 import mock.repositoryMock.SaleRepositoryMock
 import mock.entityMock.SaleEntityMock
 import mock.MockThrowable
