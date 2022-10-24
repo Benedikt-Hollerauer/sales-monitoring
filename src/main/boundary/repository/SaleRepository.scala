@@ -7,3 +7,8 @@ import zio.*
 trait SaleRepository:
 
     def saveSaleToRepository(saleEntity: SaleEntity): IO[SaleRepositoryError, Unit]
+
+object SaleRepository:
+
+    def saveSaleToRepository(saleEntity: SaleEntity) =
+        ZIO.serviceWithZIO[SaleRepository](_.saveSaleToRepository(saleEntity))
