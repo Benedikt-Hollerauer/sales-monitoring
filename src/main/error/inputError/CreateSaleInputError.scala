@@ -4,4 +4,4 @@ import error.valueError.TitleValueError
 
 enum CreateSaleInputError:
 
-    case TitleConstructionFailed(titleValueError: TitleValueError)
+    case SaleTitleConstructionFailed(titleValueError: TitleValueError)

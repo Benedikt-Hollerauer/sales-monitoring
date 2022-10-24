@@ -16,7 +16,7 @@ case class CreateSaleUseCase private(
         for
             _ <- input.saleEntity.saleTitle
                 .catchAll(titleValueError =>
-                    ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.TitleConstructionFailed(titleValueError)))
+                    ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.SaleTitleConstructionFailed(titleValueError)))
                 )
             _ <- saleRepository
                 .saveSaleToRepository(input.saleEntity)

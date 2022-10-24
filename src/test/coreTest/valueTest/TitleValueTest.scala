@@ -2,14 +2,14 @@ package coreTest.valueTest
 
 import core.value.TitleValue
 import error.valueError.TitleValueError
-import zio.*
 import zio.test.*
+import zio.*
 
 object TitleValueTest extends ZIOSpecDefault:
 
     def spec =
         suite("TitleValue test")(
-            test("TitleValue.fromString should return a ZIO with a TitleValue  when correct parameters are provided")(
+            test("TitleValue.fromString should return a TitleValue  when correct parameters are provided")(
                 for
                     mayBeTitleValue <- TitleValue.fromString(
                         mayBeTitle = "saleTitle"
@@ -17,7 +17,7 @@ object TitleValueTest extends ZIOSpecDefault:
                 yield assertTrue(mayBeTitleValue == TitleValue("saleTitle"))
             ),
 
-            test("TitleValue.fromString should return a ZIO with a TitleValueError.TitleIsToShort when a to short title is provided")(
+            test("TitleValue.fromString should return a TitleValueError.TitleIsToShort when a to short title is provided")(
                 for
                     mayBeTitleValue <- TitleValue.fromString(
                         mayBeTitle = ""
@@ -28,7 +28,7 @@ object TitleValueTest extends ZIOSpecDefault:
                 yield assertTrue(mayBeTitleValue == expected)
             ),
 
-            test("TitleValue.fromString should return a ZIO with a TitleValueError.TitleIsToLong when a to long title is provided")(
+            test("TitleValue.fromString should return a TitleValueError.TitleIsToLong when a to long title is provided")(
                 for
                     mayBeTitleValue <- TitleValue.fromString(
                         mayBeTitle = "fYdKgZM85TDeyhEapTudDPWDdLXk7zGydb2V34HbfSArePYuUfqVurvFdAJanM6ey"
