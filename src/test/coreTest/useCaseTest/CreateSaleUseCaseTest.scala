@@ -6,8 +6,8 @@ import error.useCaseError.CreateSaleUseCaseError
 import error.inputError.CreateSaleInputError
 import error.valueError.TitleValueError
 import error.repositoryError.SaleRepositoryError
-import mock.entityMock.{SaleEntityMock, SaleEntityTitleFailureMock}
-import mock.inputMock.CreateSaleInputMock
+import mock.entityMock.{SaleEntityMock, SaleEntityToShortTitleFailureMock}
+import mock.inputMock.{CreateSaleInputMock, CreateSaleInputToShortTitleFailureMock}
 import mock.repositoryMock.{SaleRepositoryFailureMock, SaleRepositoryMock}
 import mock.MockThrowable
 import zio.*
@@ -33,9 +33,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
             test("CreateSale.createValidateSaveGetSale should return a ZIO with a CreateSaleUseCaseError.InputFailed(CreateSaleInputError.TitleConstructionFailed(TitleValueError.TitleIsToShort) when a to short CreateSaleInput.saleTitle is provided")(
                 for
                     createSaleUseCase <- CreateSaleUseCase.from(
-                        input = CreateSaleInputMock.copy(
-                            saleEntity = SaleEntityTitleFailureMock
-                        ),
+                        input = CreateSaleInputToShortTitleFailureMock,
                         saleRepository = SaleRepositoryMock
                     )
                     useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause

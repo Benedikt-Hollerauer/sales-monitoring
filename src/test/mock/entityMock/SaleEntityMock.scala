@@ -7,6 +7,6 @@ object SaleEntityMock extends SaleEntity(
     saleTitle = TitleValue.fromString("saleTitle")
 )
 
-object SaleEntityTitleFailureMock extends SaleEntity(
+object SaleEntityToShortTitleFailureMock extends SaleEntity(
     saleTitle = TitleValue.fromString("")
 )
