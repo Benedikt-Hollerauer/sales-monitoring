@@ -21,7 +21,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                 yield assertTrue(useCaseResult == List(SaleEntityMock, SaleEntityMock))
             ),
 
-            test("GetLatestSalesUseCase.getValidateLatestSales should return a GetLatestSalesUseCaseError.InputFailed(GetLatestSalesInputError.AmountOfSalesConstructionFailed(AmountValueError.AmountIsNegative)) when a to negative CreateSaleInput.amountOfSales is provided")(
+            test("GetLatestSalesUseCase.getValidateLatestSales should return a GetLatestSalesUseCaseError.InputFailed(GetLatestSalesInputError.AmountOfSalesConstructionFailed(AmountValueError.AmountIsZeroOrLess)) when a to negative CreateSaleInput.amountOfSales is provided")(
                 for
                     getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                         input = GetLatestSalesInputNegativeAmountOfSalesFailureMock,
