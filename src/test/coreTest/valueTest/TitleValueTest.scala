@@ -14,7 +14,7 @@ object TitleValueTest extends ZIOSpecDefault:
                     mayBeTitleValue <- TitleValue.fromString(
                         mayBeTitle = "saleTitle"
                     )
-                yield assertTrue(mayBeTitleValue == TitleValue("saleTitle"))
+                yield assertTrue(mayBeTitleValue.isInstanceOf[TitleValue])
             ),
 
             test("TitleValue.fromString should return a TitleValueError.TitleIsToShort when a to short title is provided")(
