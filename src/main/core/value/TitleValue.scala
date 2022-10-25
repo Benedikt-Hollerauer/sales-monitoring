@@ -3,7 +3,7 @@ package core.value
 import error.valueError.TitleValueError
 import zio.*
 
-case class TitleValue(
+case class TitleValue private(
     title: String
 )
 

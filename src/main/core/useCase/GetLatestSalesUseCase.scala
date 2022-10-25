@@ -1,6 +1,7 @@
 package core.useCase
 
 import boundary.repository.SaleRepository
+import boundary.input.GetLatestSalesInput
 import zio.*
 
 case class GetLatestSalesUseCase private(
@@ -13,7 +14,7 @@ object GetLatestSalesUseCase:
     def from(
         input: GetLatestSalesInput,
         saleRepository: SaleRepository
-    ): UIO[CreateSaleUseCase] =
+    ): UIO[GetLatestSalesUseCase] =
         ZIO.succeed(
             GetLatestSalesUseCase(
                 input,

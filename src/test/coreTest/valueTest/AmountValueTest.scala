@@ -1,5 +1,7 @@
 package coreTest.valueTest
 
+import core.value.AmountValue
+import error.valueError.AmountValueError
 import zio.test.*
 import zio.*
 
@@ -12,7 +14,7 @@ object AmountValueTest extends ZIOSpecDefault:
                     mayBeAmountValue <- AmountValue.fromInt(
                         mayBeAmount = 1
                     )
-                yield assertTrue(mayBeAmountValue == AmountValue(1))
+                yield assertTrue(mayBeAmountValue.isInstanceOf[AmountValue])
             ),
 
             test("AmountValue.fromInt should return a AmountValueError.AmountIsZero when a 0 is provided as mayBeAmount")(
