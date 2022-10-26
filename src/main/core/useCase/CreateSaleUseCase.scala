@@ -14,8 +14,8 @@ case class CreateSaleUseCase private(
 ):
     def createValidateSaveGetSale: IO[CreateSaleUseCaseError, SaleEntity] =
         for
-            _ <- input.saleEntity.saleTitle
-                .catchAll(titleValueError =>
+            _ <- input.saleEntity.title
+                      .catchAll(titleValueError =>
                     ZIO.fail(CreateSaleUseCaseError.InputFailure(CreateSaleInputError.SaleTitleConstructionFailed(titleValueError)))
                 )
             _ <- saleRepository

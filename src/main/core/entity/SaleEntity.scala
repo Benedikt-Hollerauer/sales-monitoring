@@ -5,5 +5,5 @@ import error.valueError.TitleValueError
 import zio.*
 
 case class SaleEntity(
-    saleTitle: IO[TitleValueError, TitleValue]
+    title: IO[TitleValueError, TitleValue]
 )
