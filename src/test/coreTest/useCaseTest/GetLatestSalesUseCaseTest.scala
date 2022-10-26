@@ -39,7 +39,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                 yield assertTrue(useCaseResult == expected)
             ),
 
-            test("GetLatestSalesUseCase.getValidateLatestSales should return a GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed)) when a failure occurred in the SaleRepository")(
+            test("GetLatestSalesUseCase.getValidateLatestSales should return a GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.NotFound))) when a nothing was found in SaleRepository")(
                 for
                     getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                         input = GetLatestSalesInputMock,
@@ -47,7 +47,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     )
                     useCaseResult <- getLatestSalesUseCase.getValidateLatestSales.cause
                     expected <- ZIO.fail(
-                        GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(MockThrowable))
+                        GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.NotFound))
                     ).cause
                 yield assertTrue(useCaseResult == expected)
             ),

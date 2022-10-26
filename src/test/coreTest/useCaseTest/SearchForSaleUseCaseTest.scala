@@ -1,5 +1,6 @@
 package coreTest.useCaseTest
 
+import mock.MockThrowable
 import zio.test.*
 import zio.*
 
@@ -30,7 +31,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                 yield assertTrue(useCaseResult == expected)
             ),
 
-            test("SearchForSaleUseCase.searchValidateGetSales should return a SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed)) when a failure occurred in the SaleRepository")(
+            test("SearchForSaleUseCase.searchValidateGetSales should return a SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(RepositoryError.Failure))) when a failure occurred in the SaleRepository")(
                 for
                     searchForSaleUseCase <- SearchForSaleUseCase.from(
                         input = SearchForSaleInputMock,
@@ -38,8 +39,21 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                     )
                     useCaseResult <- getLatestSalesUseCase.searchValidateGetSales.cause
                     expected <- ZIO.fail(
-                        SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(MockThrowable))
+                        SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(RepositoryError.Failure(MockThrowable)))
                     ).cause
                 yield assertTrue(useCaseResult == expected)
             ),
+
+            test("SearchForSaleUseCase.searchValidateGetSales should return a SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(RepositoryError.NotFound))) when a nothing was found in SaleRepository")(
+                for
+                    searchForSaleUseCase <- SearchForSaleUseCase.from(
+                        input = SearchForSaleInputMock,
+                        saleRepository = SaleRepositoryFailureMock
+                    )
+                    useCaseResult <- getLatestSalesUseCase.searchValidateGetSales.cause
+                    expected <- ZIO.fail(
+                        SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(RepositoryError.NotFound))
+                    ).cause
+                yield assertTrue(useCaseResult == expected)
+            )
         )

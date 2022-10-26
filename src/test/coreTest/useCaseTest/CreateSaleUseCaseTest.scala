@@ -43,7 +43,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                 yield assertTrue(useCaseResult == expected)
             ),
 
-            test("CreateSaleUseCase.createValidateSaveGetSale should return a CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed)) when a failure occurred in the SaleRepository")(
+            test("CreateSaleUseCase.createValidateSaveGetSale should return a CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure))) when a failure occurred in the SaleRepository")(
                 for
                     createSaleUseCase <- CreateSaleUseCase.from(
                         input = CreateSaleInputMock,
@@ -51,7 +51,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     )
                     useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
                     expected <- ZIO.fail(
-                        CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(MockThrowable))
+                        CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure(MockThrowable)))
                     ).cause
                 yield assertTrue(useCaseResult == expected)
             )
