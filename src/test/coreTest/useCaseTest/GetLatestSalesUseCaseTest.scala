@@ -9,6 +9,7 @@ import error.useCaseError.GetLatestSalesUseCaseError
 import error.inputError.GetLatestSalesInputError
 import error.repositoryError.SaleRepositoryError
 import error.valueError.AmountValueError
+import error.repositoryError.RepositoryError
 import zio.test.*
 import zio.*
 
