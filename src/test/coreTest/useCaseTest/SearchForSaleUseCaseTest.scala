@@ -1,5 +1,8 @@
 package coreTest.useCaseTest
 
+import core.useCase.SearchForSaleUseCase
+import mock.repositoryMock.{SaleRepositoryFailureMock, SaleRepositoryMock}
+import mock.inputMock.SearchForSaleInputMock
 import mock.MockThrowable
 import zio.test.*
 import zio.*
@@ -14,7 +17,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         input = SearchForSaleInputMock,
                         saleRepository = SaleRepositoryMock
                     )
-                    useCaseResult <- getLatestSalesUseCase.searchValidateGetSales
+                    useCaseResult <- searchForSaleUseCase.searchValidateGetSales
                 yield assertTrue(useCaseResult == NonEmptyChunk(SaleEntityMock, SaleEntityMock))
             ),
 
@@ -24,7 +27,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         input = SearchForSaleToShortSaleDescriptionFailureInputMock,
                         saleRepository = SaleRepositoryMock
                     )
-                    useCaseResult <- getLatestSalesUseCase.searchValidateGetSales.cause
+                    useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                     expected <- ZIO.fail(
                         SearchForSaleUseCaseError.InputFailed(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort("invalid")))
                     ).cause
@@ -37,7 +40,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         input = SearchForSaleInputMock,
                         saleRepository = SaleRepositoryFailureMock
                     )
-                    useCaseResult <- getLatestSalesUseCase.searchValidateGetSales.cause
+                    useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                     expected <- ZIO.fail(
                         SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(RepositoryError.Failure(MockThrowable)))
                     ).cause
@@ -50,7 +53,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         input = SearchForSaleInputMock,
                         saleRepository = SaleRepositoryFailureMock
                     )
-                    useCaseResult <- getLatestSalesUseCase.searchValidateGetSales.cause
+                    useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                     expected <- ZIO.fail(
                         SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByShippingFailed(RepositoryError.NotFound))
                     ).cause
