@@ -5,6 +5,7 @@ import boundary.repository.SaleRepository
 import core.entity.SaleEntity
 import error.useCaseError.SearchForSaleUseCaseError
 import error.inputError.SearchForSaleInputError
+import error.repositoryError.{SaleRepositoryError, RepositoryError}
 import zio.*
 
 case class SearchForSaleUseCase private(
@@ -25,8 +26,24 @@ case class SearchForSaleUseCase private(
                                     .catchAll(descriptionValueError =>
                                         ZIO.fail(SearchForSaleUseCaseError.InputFailure(SearchForSaleInputError.SaleDescriptionConstructionFailed(descriptionValueError)))
                                     )
-            salesPlatform = input.salesPlatform
-        yield ???
+            searchByTitle <- saleRepository.searchSalesByTitle(saleTitle)
+                                           .catchAll(saleRepositoryError =>
+                                               ZIO.fail(SearchForSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError))
+                                           )
+            searchByDateSpan <- saleRepository.searchSalesByDateSpan(saleDateSpan)
+                                              .catchAll(saleRepositoryError =>
+                                                  ZIO.fail(SearchForSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError))
+                                              )
+            searchByDescription <- saleRepository.searchSalesByDescription(saleDescription)
+                                                 .catchAll(saleRepositoryError =>
+                                                     ZIO.fail(SearchForSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError))
+                                                 )
+            searchByPlatform <- saleRepository.searchSalesByPlatform(input.salesPlatform)
+                                              .catchAll(saleRepositoryError =>
+                                                  ZIO.fail(SearchForSaleUseCaseError.SaleRepositoryFailure(saleRepositoryError))
+                                              )
+            searchResult = NonEmptyChunk(searchByTitle, searchByDateSpan, searchByDescription, searchByPlatform).flatten
+        yield searchResult
 
 object SearchForSaleUseCase:
 

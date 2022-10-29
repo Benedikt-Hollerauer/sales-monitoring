@@ -17,6 +17,6 @@ object SearchForSaleInputMock extends SearchForSaleInput(
 object SearchForSaleToShortSaleDescriptionFailureInputMock extends SearchForSaleInput(
     saleTitle = TitleValue.fromString("correct Title"),
     saleDateSpan = ZIO.succeed((LocalDate.now(), LocalDate.now())),
-    saleDescription = DescriptionValue.fromString(Random.nextString(1)),
+    saleDescription = DescriptionValue.fromString("invalid"),
     salesPlatform = PlatformValue.EbayClassifieds
 )

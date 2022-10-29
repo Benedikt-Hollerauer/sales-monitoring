@@ -25,7 +25,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                 for
                     createSaleUseCase <- CreateSaleUseCase.from(
                         input = CreateSaleInputMock,
-                        saleRepository = SaleRepositoryMock
+                        saleRepository = SaleRepositoryMock()
                     )
                     useCaseResult <- createSaleUseCase.createValidateSaveGetSale
                 yield assertTrue(useCaseResult == SaleEntityMock)
@@ -35,7 +35,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                 for
                     createSaleUseCase <- CreateSaleUseCase.from(
                         input = CreateSaleInputToShortTitleFailureMock,
-                        saleRepository = SaleRepositoryMock
+                        saleRepository = SaleRepositoryMock()
                     )
                     useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
                     expected <- ZIO.fail(

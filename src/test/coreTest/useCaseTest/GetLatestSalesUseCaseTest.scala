@@ -21,7 +21,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                 for
                     getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                         input = GetLatestSalesInputMock,
-                        saleRepository = SaleRepositoryMock
+                        saleRepository = SaleRepositoryMock()
                     )
                     useCaseResult <- getLatestSalesUseCase.getValidateLatestSales
                 yield assertTrue(useCaseResult == NonEmptyChunk(SaleEntityMock, SaleEntityMock))
@@ -31,7 +31,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                 for
                     getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                         input = GetLatestSalesNegativeAmountOfSalesFailureInputMock,
-                        saleRepository = SaleRepositoryMock
+                        saleRepository = SaleRepositoryMock()
                     )
                     useCaseResult <- getLatestSalesUseCase.getValidateLatestSales.cause
                     expected <- ZIO.fail(
@@ -40,7 +40,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                 yield assertTrue(useCaseResult == expected)
             ),
 
-            test("GetLatestSalesUseCase.getValidateLatestSales should return a GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.NotFound))) when a nothing was found in SaleRepository")(
+            test("GetLatestSalesUseCase.getValidateLatestSales should return a GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))) when a nothing was found in SaleRepository")(
                 for
                     getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                         input = GetLatestSalesInputMock,
@@ -48,7 +48,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     )
                     useCaseResult <- getLatestSalesUseCase.getValidateLatestSales.cause
                     expected <- ZIO.fail(
-                        GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.NotFound))
+                        GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))
                     ).cause
                 yield assertTrue(useCaseResult == expected)
             ),
