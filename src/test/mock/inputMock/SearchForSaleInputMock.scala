@@ -8,8 +8,15 @@ import scala.util.Random
 import java.time.LocalDate
 
 object SearchForSaleInputMock extends SearchForSaleInput(
-    title = TitleValue.fromString("correct Title"),
-    saleDate = ZIO.succeed(LocalDate.now()),
+    saleTitle = TitleValue.fromString("correct Title"),
+    saleDateSpan = ZIO.succeed((LocalDate.now(), LocalDate.now())),
     saleDescription = DescriptionValue.fromString(Random.nextString(55)),
+    salesPlatform = PlatformValue.EbayClassifieds
+)
+
+object SearchForSaleToShortSaleDescriptionFailureInputMock extends SearchForSaleInput(
+    saleTitle = TitleValue.fromString("correct Title"),
+    saleDateSpan = ZIO.succeed((LocalDate.now(), LocalDate.now())),
+    saleDescription = DescriptionValue.fromString(Random.nextString(1)),
     salesPlatform = PlatformValue.EbayClassifieds
 )

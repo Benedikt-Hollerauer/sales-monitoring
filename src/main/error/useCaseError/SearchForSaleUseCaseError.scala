@@ -1,5 +1,6 @@
 package error.useCaseError
 
+import error.inputError.SearchForSaleInputError
 import error.repositoryError.SaleRepositoryError
 
 enum SearchForSaleUseCaseError:

@@ -9,8 +9,8 @@ import zio.IO
 import java.time.LocalDate
 
 case class SearchForSaleInput(
-    title: IO[TitleValueError, TitleValue],
-    saleDate: IO[Exception, LocalDate],
+    saleTitle: IO[TitleValueError, TitleValue],
+    saleDateSpan: IO[Exception, (LocalDate, LocalDate)],
     saleDescription: IO[DescriptionValueError, DescriptionValue],
-    salesPlatform: PlatformValue,
+    salesPlatform: PlatformValue
 )
