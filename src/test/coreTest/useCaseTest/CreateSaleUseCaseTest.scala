@@ -9,7 +9,7 @@ import error.repositoryError.SaleRepositoryError
 import error.repositoryError.RepositoryError
 import mock.entityMock.{SaleEntityMock, SaleEntityToShortTitleFailureMock}
 import mock.inputMock.{CreateSaleInputMock, CreateSaleInputToShortTitleFailureMock}
-import mock.repositoryMock.{SaleRepositoryFailureMock, SaleRepositoryMock}
+import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySaveSaleToRepositoryFailureMock}
 import mock.MockThrowable
 import zio.test.Assertion.*
 import zio.test.*
@@ -49,7 +49,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = CreateSaleInputMock,
-                            saleRepository = SaleRepositoryFailureMock
+                            saleRepository = SaleRepositorySaveSaleToRepositoryFailureMock
                         )
                         useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
                         expected <- ZIO.fail(

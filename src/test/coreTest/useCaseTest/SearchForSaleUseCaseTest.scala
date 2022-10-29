@@ -1,7 +1,7 @@
 package coreTest.useCaseTest
 
 import core.useCase.SearchForSaleUseCase
-import mock.repositoryMock.{SaleRepositoryFailureMock, SaleRepositoryMock, SaleRepositorySearchSalesByPlatformFailureMock, SaleRepositorySearchSalesByDateSpanFailureMock}
+import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySearchSalesByPlatformFailureMock, SaleRepositorySearchSalesByDateSpanFailureMock}
 import mock.inputMock.{SearchForSaleInputMock, SearchForSaleToShortSaleDescriptionFailureInputMock}
 import mock.MockThrowable
 import mock.entityMock.SaleEntityMock

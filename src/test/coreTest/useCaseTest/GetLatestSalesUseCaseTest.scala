@@ -1,7 +1,7 @@
 package coreTest.useCaseTest
 
 import core.useCase.GetLatestSalesUseCase
-import mock.repositoryMock.{SaleRepositoryMock, SaleRepositoryFailureMock}
+import mock.repositoryMock.{SaleRepositoryMock, SaleRepositoryFindLatestSalesByAmountFailureMock}
 import mock.entityMock.SaleEntityMock
 import mock.inputMock.{GetLatestSalesInputMock, GetLatestSalesNegativeAmountOfSalesFailureInputMock}
 import mock.MockThrowable
@@ -45,7 +45,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesInputMock,
-                            saleRepository = SaleRepositoryFailureMock
+                            saleRepository = SaleRepositoryFindLatestSalesByAmountFailureMock
                         )
                         useCaseResult <- getLatestSalesUseCase.getValidateLatestSales.cause
                         expected <- ZIO.fail(
