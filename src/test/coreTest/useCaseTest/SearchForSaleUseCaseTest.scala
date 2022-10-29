@@ -1,13 +1,14 @@
 package coreTest.useCaseTest
 
 import core.useCase.SearchForSaleUseCase
-import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySearchSalesByPlatformFailureMock, SaleRepositorySearchSalesByDateSpanFailureMock}
-import mock.inputMock.{SearchForSaleInputMock, SearchForSaleToShortSaleDescriptionFailureInputMock}
+import core.value.DescriptionValue
+import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySearchSalesByDateSpanFailureMock, SaleRepositorySearchSalesByPlatformFailureMock}
+import mock.inputMock.SearchForSaleInputMock
 import mock.MockThrowable
 import mock.entityMock.SaleEntityMock
 import error.useCaseError.SearchForSaleUseCaseError
 import error.inputError.SearchForSaleInputError
-import error.repositoryError.{SaleRepositoryError, RepositoryError}
+import error.repositoryError.{RepositoryError, SaleRepositoryError}
 import error.valueError.DescriptionValueError
 import zio.test.*
 import zio.*
@@ -30,7 +31,9 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                 test("SearchForSaleUseCaseError.InputFailed(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort)) when a to short CreateSaleInput.saleDescription is provided")(
                     for
                         searchForSaleUseCase <- SearchForSaleUseCase.from(
-                            input = SearchForSaleToShortSaleDescriptionFailureInputMock,
+                            input = SearchForSaleInputMock.copy(
+                                saleDescription = DescriptionValue.fromString("invalid")
+                            ),
                             saleRepository = SaleRepositoryMock()
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
