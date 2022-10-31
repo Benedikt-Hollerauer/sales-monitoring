@@ -13,3 +13,7 @@ object SearchForSaleInputMock extends SearchForSaleInput(
     saleDescription = DescriptionValue.fromString(Random.nextString(55)),
     salesPlatform = PlatformValue.EbayClassifieds
 )
+
+val SearchForSaleToShortDescriptionInputFailureMock: SearchForSaleInput = SearchForSaleInputMock.copy(
+    saleDescription = DescriptionValue.fromString("invalid")
+)

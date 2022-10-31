@@ -20,18 +20,18 @@ case class SaleRepositoryMock() extends SaleRepository:
     override def searchSalesByDescription(description: DescriptionValue): IO[SaleRepositoryError, NonEmptyChunk[SaleEntity]] = ZIO.succeed(NonEmptyChunk(SaleEntityMock, SaleEntityMock))
     override def searchSalesByPlatform(platform: PlatformValue): IO[SaleRepositoryError, NonEmptyChunk[SaleEntity]] = ZIO.succeed(NonEmptyChunk(SaleEntityMock, SaleEntityMock))
 
-object SaleRepositorySaveSaleToRepositoryFailureMock extends SaleRepositoryMock {
+object SaleRepositorySaveSaleToRepositoryFailureMock extends SaleRepositoryMock:
+
     override def saveSaleToRepository(saleEntity: SaleEntity): IO[SaleRepositoryError, Unit] = ZIO.fail(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure(MockThrowable)))
-}
 
-object SaleRepositoryFindLatestSalesByAmountFailureMock extends SaleRepositoryMock {
+object SaleRepositoryFindLatestSalesByAmountFailureMock extends SaleRepositoryMock:
+
     override def findLatestSalesByAmount(amount: AmountValue): IO[SaleRepositoryError, NonEmptyChunk[SaleEntity]] = ZIO.fail(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))
-}
 
-object SaleRepositorySearchSalesByPlatformFailureMock extends SaleRepositoryMock {
+object SaleRepositorySearchSalesByPlatformFailureMock extends SaleRepositoryMock:
+
     override def searchSalesByPlatform(platform: PlatformValue): IO[SaleRepositoryError, NonEmptyChunk[SaleEntity]] = ZIO.fail(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
-}
 
-object SaleRepositorySearchSalesByDateSpanFailureMock extends SaleRepositoryMock {
+object SaleRepositorySearchSalesByDateSpanFailureMock extends SaleRepositoryMock:
+
     override def searchSalesByDateSpan(dateSpan: (LocalDate, LocalDate)): IO[SaleRepositoryError, NonEmptyChunk[SaleEntity]] = ZIO.fail(SaleRepositoryError.SearchSalesByDateSpanFailed(RepositoryError.Failure(MockThrowable)))
-}

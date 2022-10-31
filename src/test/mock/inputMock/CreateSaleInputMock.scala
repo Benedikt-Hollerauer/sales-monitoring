@@ -7,6 +7,9 @@ object CreateSaleInputMock extends CreateSaleInput(
     saleEntity = SaleEntityMock
 )
 
+val CreateSaleInputToShortTitleFailureMock: CreateSaleInput = CreateSaleInputMock.copy(saleEntity = SaleEntityToShortTitleFailureMock)
+
+/*
 object CreateSaleInputToShortTitleFailureMock extends CreateSaleInput(
     saleEntity = SaleEntityToShortTitleFailureMock
-)
+)*/
