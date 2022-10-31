@@ -8,8 +8,3 @@ object CreateSaleInputMock extends CreateSaleInput(
 )
 
 val CreateSaleInputToShortTitleFailureMock: CreateSaleInput = CreateSaleInputMock.copy(saleEntity = SaleEntityToShortTitleFailureMock)
-
-/*
-object CreateSaleInputToShortTitleFailureMock extends CreateSaleInput(
-    saleEntity = SaleEntityToShortTitleFailureMock
-)*/

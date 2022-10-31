@@ -9,8 +9,3 @@ object GetLatestSalesInputMock extends GetLatestSalesInput(
 )
 
 val GetLatestSalesNegativeAmountOfSalesFailureInputMock: GetLatestSalesInput = GetLatestSalesInputMock.copy(amountOfSales = AmountValue.fromInt(-1))
-
-/*
-object GetLatestSalesNegativeAmountOfSalesFailureInputMock extends GetLatestSalesInput(
-    amountOfSales = AmountValue.fromInt(-1)
-)*/
