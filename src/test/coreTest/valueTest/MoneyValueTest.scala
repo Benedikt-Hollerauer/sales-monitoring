@@ -10,21 +10,26 @@ object MoneyValueTest extends ZIOSpecDefault:
             suite("MoneyValue.fromDouble should return")(
                 test("MoneyValue when correct parameters are provided")(
                     for
-                        mayBeTitleValue <- MoneyValue.fromDouble(
+                        mayBeMoneyValue <- MoneyValue.fromDouble(
                             mayBeAmount = 5.11
                         )
-                    yield assertTrue(mayBeTitleValue.isInstanceOf[MoneyValue])
+                        mayBeMoneyValue1DecimalPlace <- MoneyValue.fromDouble(
+                            mayBeAmount = 5.11
+                        )
+                    yield
+                        assertTrue(mayBeTitleValue.isInstanceOf[MoneyValue])
+                        assertTrue(mayBeMoneyValue1DecimalPlace.isInstanceOf[MoneyValue])
                 ),
 
-                test("TitleValueError.TitleIsToShort when a to short title is provided")(
+                test("MoneyValueError.MoreThanTwoDecimalPlaces when more than 2 decimal places are provided")(
                     for
-                        mayBeTitleValue <- TitleValue.fromString(
+                        mayBeMoneyValue <- MoneyValue.fromDouble(
                             mayBeAmount = 15.37842364
                         ).cause
                         expected <- ZIO.fail(
                             MoneyValueError.MoreThanTwoDecimalPlaces(15.37842364)
                         ).cause
-                    yield assertTrue(mayBeTitleValue == expected)
+                    yield assertTrue(mayBeMoneyValue == expected)
                 )
             )
         )
