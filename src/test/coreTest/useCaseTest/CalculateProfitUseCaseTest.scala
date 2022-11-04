@@ -17,6 +17,18 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit
                     yield assertTrue(useCaseResult == MoneyValue(14.20))
+                ),
+
+                test("CalculateProfitUseCaseError.ProfitConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided")(
+                    for
+                        createSaleUseCase <- CalculateProfitUseCase.from(
+                            input = CalculateProfitToManyDecimalPlacesInputFailureMock,
+                        )
+                        useCaseResult <- createSaleUseCase.calculateProfit.cause
+                        expected <- ZIO.fail(
+                            CalculateProfitUseCaseError.ProfitConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
+                        ).cause
+                    yield assertTrue(useCaseResult == expected)
                 )
             )
         )

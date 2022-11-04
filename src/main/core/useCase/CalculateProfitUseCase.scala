@@ -6,7 +6,7 @@ import zio.*
 case class CalculateProfitUseCase private(
     input: CalculateProfitInput
 ):
-    def calculateProfit: UIO[MoneyValue] = ???
+    def calculateProfit: IO[CalculateProfitUseCaseError, MoneyValue] = ???
 
 object CalculateProfitUseCase:
 
