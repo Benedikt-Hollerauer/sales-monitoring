@@ -1,5 +1,7 @@
 package coreTest.valueTest
 
+import core.value.MoneyValue
+import error.valueError.MoneyValueError
 import zio.test.*
 import zio.*
 
@@ -19,6 +21,17 @@ object MoneyValueTest extends ZIOSpecDefault:
                     yield
                         assertTrue(mayBeTitleValue.isInstanceOf[MoneyValue])
                         assertTrue(mayBeMoneyValue1DecimalPlace.isInstanceOf[MoneyValue])
+                ),
+
+                test("MoneyValueError.MayBeAmountIsNegative when a negative amount is provided")(
+                    for
+                        mayBeMoneyValue <- MoneyValue.fromDouble(
+                            mayBeAmount = -1.1
+                        ).cause
+                        expected <- ZIO.fail(
+                            MoneyValueError.MayBeAmountIsNegative(-1.1)
+                        ).cause
+                    yield assertTrue(mayBeMoneyValue == expected)
                 ),
 
                 test("MoneyValueError.MoreThanTwoDecimalPlaces when more than 2 decimal places are provided")(
