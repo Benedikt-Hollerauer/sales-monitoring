@@ -1,8 +1,8 @@
 package core.entity
 
-import core.value.{DescriptionValue, PlatformValue, TitleValue, MoneyValue}
+import core.value.{DescriptionValue, MoneyValue, PlatformValue, TitleValue}
+import error.entityError.SaleEntityError
 import error.valueError.{DescriptionValueError, MoneyValueError, TitleValueError}
-
 import java.time.LocalDate
 import zio.*
 
@@ -13,4 +13,5 @@ case class SaleEntity(
     sellingCosts: IO[MoneyValueError, MoneyValue],
     date: IO[Exception, LocalDate],
     platform: PlatformValue
-)
+):
+    def calculateProfit: IO[SaleEntityError, MoneyValue] = ???

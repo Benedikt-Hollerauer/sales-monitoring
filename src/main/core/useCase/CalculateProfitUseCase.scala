@@ -2,13 +2,13 @@ package core.useCase
 
 import core.value.MoneyValue
 import boundary.input.CalculateProfitInput
+import error.entityError.SaleEntityError
 import zio.*
 
 case class CalculateProfitUseCase private(
     input: CalculateProfitInput
 ):
-    def calculateProfit: IO[CalculateProfitUseCaseError, MoneyValue] =
-        input.sales.reduce(x => x)
+    def calculateProfit: IO[SaleEntityError, MoneyValue] = ???
 
 object CalculateProfitUseCase:
 

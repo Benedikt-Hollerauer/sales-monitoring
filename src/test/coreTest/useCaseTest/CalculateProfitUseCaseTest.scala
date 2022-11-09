@@ -1,7 +1,10 @@
 package coreTest.useCaseTest
 
 import core.useCase.CalculateProfitUseCase
+import core.value.MoneyValue
 import mock.inputMock.CalculateProfitInputMock
+import error.entityError.SaleEntityError
+import error.valueError.MoneyValueError
 import zio.test.*
 import zio.*
 
@@ -16,17 +19,17 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                             input = CalculateProfitInputMock
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit
-                    yield assertTrue(useCaseResult == MoneyValue(14.20))
+                    yield assertTrue(useCaseResult.amount == 14.20 && useCaseResult.isInstanceOf[MoneyValue])
                 ),
 
-                test("CalculateProfitUseCaseError.ProfitConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided")(
+                test("CalculateProfitUseCaseError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided")(
                     for
                         createSaleUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitToManyDecimalPlacesInputFailureMock,
                         )
                         useCaseResult <- createSaleUseCase.calculateProfit.cause
                         expected <- ZIO.fail(
-                            CalculateProfitUseCaseError.ProfitConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
+                            SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
                         ).cause
                     yield assertTrue(useCaseResult == expected)
                 )

@@ -1,7 +1,12 @@
 package coreTest.entityTest
 
+import core.value.MoneyValue
+import mock.entityMock.SaleEntityMock.*
+import error.entityError.SaleEntityError
+import error.valueError.MoneyValueError
 import mock.entityMock.SaleEntityMock
 import zio.test.*
+import zio.*
 
 object SaleEntityTest extends ZIOSpecDefault:
 
@@ -11,14 +16,23 @@ object SaleEntityTest extends ZIOSpecDefault:
                 test("MoneyValue when correct parameters are provided")(
                     for
                         result <- SaleEntityMock.calculateProfit
-                    yield assertTrue(result == MoneyValue(14.20))
+                    yield assertTrue(result.amount == 14.20 && result.isInstanceOf[MoneyValue])
                 ),
 
-                test("SaleEntityError.ProfitConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided")(
+                test("SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingPrice")(
                     for
-                        result <- SaleEntityToManyDecimalPlecesFailureMock.calculateProfit.cause
+                        result <- saleEntityToManyDecimalPlacesSellingPriceFailureMock.calculateProfit.cause
                         expected <- ZIO.fail(
-                            SaleEntityError.ProfitConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
+                            SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
+                        ).cause
+                    yield assertTrue(result == expected)
+                ),
+
+                test("SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingCosts")(
+                    for
+                        result <- saleEntityToManyDecimalPlacesSellingCostsFailureMock.calculateProfit.cause
+                        expected <- ZIO.fail(
+                            SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
                         ).cause
                     yield assertTrue(result == expected)
                 )
