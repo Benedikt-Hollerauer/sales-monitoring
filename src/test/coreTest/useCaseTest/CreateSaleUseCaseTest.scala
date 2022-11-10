@@ -7,7 +7,7 @@ import error.inputError.CreateSaleInputError
 import error.valueError.TitleValueError
 import error.repositoryError.SaleRepositoryError
 import error.repositoryError.RepositoryError
-import mock.entityMock.{SaleEntityMock, SaleEntityToShortTitleFailureMock}
+import mock.entityMock.SaleEntityMock
 import mock.inputMock.{CreateSaleInputMock, CreateSaleInputToShortTitleFailureMock}
 import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySaveSaleToRepositoryFailureMock}
 import mock.MockThrowable

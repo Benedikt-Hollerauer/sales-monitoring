@@ -16,11 +16,12 @@ object MoneyValueTest extends ZIOSpecDefault:
                             mayBeAmount = 5.11
                         )
                         mayBeMoneyValue1DecimalPlace <- MoneyValue.fromDouble(
-                            mayBeAmount = 5.11
+                            mayBeAmount = 5.1
                         )
-                    yield
-                        assertTrue(mayBeTitleValue.isInstanceOf[MoneyValue])
-                        assertTrue(mayBeMoneyValue1DecimalPlace.isInstanceOf[MoneyValue])
+                    yield {
+                        assertTrue(mayBeMoneyValue.isInstanceOf[MoneyValue] && mayBeMoneyValue.amount == 5.11)
+                        assertTrue(mayBeMoneyValue1DecimalPlace.isInstanceOf[MoneyValue] && mayBeMoneyValue1DecimalPlace.amount == 5.1)
+                    }
                 ),
 
                 test("MoneyValueError.MayBeAmountIsNegative when a negative amount is provided")(

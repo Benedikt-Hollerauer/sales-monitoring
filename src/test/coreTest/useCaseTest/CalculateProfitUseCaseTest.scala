@@ -16,20 +16,32 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                 test("MoneyValue when correct parameters are provided")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
-                            input = CalculateProfitInputMock
+                            input = new CalculateProfitInputMock()
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit
                     yield assertTrue(useCaseResult.amount == 14.20 && useCaseResult.isInstanceOf[MoneyValue])
                 ),
 
-                test("CalculateProfitUseCaseError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided")(
+                test("CalculateProfitUseCaseError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingPrice")(
                     for
-                        createSaleUseCase <- CalculateProfitUseCase.from(
-                            input = CalculateProfitToManyDecimalPlacesInputFailureMock,
+                        calculateProfitUseCase <- CalculateProfitUseCase.from(
+                            input = CalculateProfitInputMock.calculateProfitToManySellingPriceDecimalPlacesInputFailureMock,
                         )
-                        useCaseResult <- createSaleUseCase.calculateProfit.cause
+                        useCaseResult <- calculateProfitUseCase.calculateProfit.cause
                         expected <- ZIO.fail(
                             SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
+                        ).cause
+                    yield assertTrue(useCaseResult == expected)
+                ),
+
+                test("CalculateProfitUseCaseError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingCosts")(
+                    for
+                        calculateProfitUseCase <- CalculateProfitUseCase.from(
+                            input = CalculateProfitInputMock.calculateProfitToManySellingCostsDecimalPlacesInputFailureMock,
+                        )
+                        useCaseResult <- calculateProfitUseCase.calculateProfit.cause
+                        expected <- ZIO.fail(
+                            SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
                         ).cause
                     yield assertTrue(useCaseResult == expected)
                 )

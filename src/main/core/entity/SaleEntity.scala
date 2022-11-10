@@ -14,4 +14,10 @@ case class SaleEntity(
     date: IO[Exception, LocalDate],
     platform: PlatformValue
 ):
-    def calculateProfit: IO[SaleEntityError, MoneyValue] = ???
+    def calculateProfit: IO[SaleEntityError, MoneyValue] =
+        for
+            sellingPrice <- sellingPrice.catchAll(error => ZIO.fail(SaleEntityError.SellingPriceConstructionFailed(error)))
+            sellingCosts <- sellingCosts.catchAll(error => ZIO.fail(SaleEntityError.SellingCostsConstructionFailed(error)))
+            profitCalculationResult = (BigDecimal.valueOf(sellingPrice.amount) - BigDecimal.valueOf(sellingCosts.amount)).toDouble
+            profit <- MoneyValue.fromDouble(profitCalculationResult).catchAll(error => ZIO.fail(SaleEntityError.ProfitConstructionFailed(error)))
+        yield profit

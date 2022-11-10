@@ -15,8 +15,8 @@ object SaleEntityTest extends ZIOSpecDefault:
             suite("SaleEntity.calculateProfit should return")(
                 test("MoneyValue when correct parameters are provided")(
                     for
-                        result <- SaleEntityMock.calculateProfit
-                    yield assertTrue(result.amount == 14.20 && result.isInstanceOf[MoneyValue])
+                        result <- new SaleEntityMock().calculateProfit
+                    yield assertTrue(result.amount == 14.00 && result.isInstanceOf[MoneyValue])
                 ),
 
                 test("SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingPrice")(
