@@ -8,7 +8,14 @@ import zio.*
 case class CalculateProfitUseCase private(
     input: CalculateProfitInput
 ):
-    def calculateProfit: IO[SaleEntityError, MoneyValue] = ???
+    def calculateProfit: IO[SaleEntityError, MoneyValue] =
+        input.sales.reduce((x, y) =>
+            for
+                first <- x.calculateProfit.catchAll(error => ZIO.fail(error))
+                second <- y.calculateProfit.catchAll(error => ZIO.fail(error))
+                moinsen <- MoneyValue.fromDouble(first.amount + second.amount).catchAll(error => ZIO.fail(SaleEntityError.ProfitConstructionFailed(error)))
+            yield moinsen
+        )
 
 object CalculateProfitUseCase:
 
