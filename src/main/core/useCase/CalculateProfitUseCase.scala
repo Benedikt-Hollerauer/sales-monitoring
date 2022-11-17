@@ -9,10 +9,14 @@ case class CalculateProfitUseCase private(
     input: CalculateProfitInput
 ):
     def calculateProfit: IO[SaleEntityError, MoneyValue] =
-        input.sales
+        val test = input.sales
             .flatMap(saleEntity => NonEmptyChunk(saleEntity.calculateProfit))
-            .flatMap(mayBeError => NonEmptyChunk(mayBeError.catchAll(error => ZIO.fail(error))))
-            .map(moneyValue => moneyValue.flatMap(x => x))
+
+        val test2 = test.map(x => (x.map(y => NonEmptyChunk(y))).map(moin => moin))
+
+        val test3 = test2.map(x => x.flatMap(y => y.reduce((x1, x2) => ZIO.succeed(x1.amount + x2.amount))))
+
+
 
         input.sales.reduce((x, y) =>
             for
