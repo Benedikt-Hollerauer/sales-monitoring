@@ -15,9 +15,9 @@ case class CalculateProfitUseCase private(
             for
                 firstProfit <- first
                 secondProfit <- second
-                mayBeProfit <- MoneyValue.fromDouble(firstProfit.amount + secondProfit.amount).catchAll(error =>
-                    ZIO.fail(SaleEntityError.ProfitConstructionFailed(error))
-                )
+                mayBeProfit <- MoneyValue.fromDouble(
+                    (BigDecimal.valueOf(firstProfit.amount) + BigDecimal.valueOf(secondProfit.amount)).toDouble
+                ).catchAll(error => ZIO.fail(SaleEntityError.ProfitConstructionFailed(error)))
             yield mayBeProfit
         )
 

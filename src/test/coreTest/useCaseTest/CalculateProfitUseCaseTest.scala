@@ -30,7 +30,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit.cause
                         expected <- ZIO.fail(
-                            SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
+                            SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
                         ).cause
                     yield assertTrue(useCaseResult == expected)
                 ),
@@ -42,7 +42,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit.cause
                         expected <- ZIO.fail(
-                            SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(20.2222))
+                            SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
                         ).cause
                     yield assertTrue(useCaseResult == expected)
                 )
