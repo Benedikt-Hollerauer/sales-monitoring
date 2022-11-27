@@ -19,7 +19,8 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                             input = new CalculateProfitInputMock()
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit
-                    yield assertTrue(useCaseResult.amount == 14.20 && useCaseResult.isInstanceOf[MoneyValue])
+                    yield assertTrue(useCaseResult.amount == 28.00) &&
+                        assertTrue(useCaseResult.isInstanceOf[MoneyValue])
                 ),
 
                 test("CalculateProfitUseCaseError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingPrice")(
