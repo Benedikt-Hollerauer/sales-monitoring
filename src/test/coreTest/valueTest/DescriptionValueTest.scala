@@ -9,9 +9,9 @@ import scala.util.Random
 object DescriptionValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite("DescriptionValue test")(
-            suite("DescriptionValue.fromString should return")(
-                test("DescriptionValue when correct parameters are provided")(
+        suite(s"${DescriptionValue.getClass.getSimpleName}")(
+            suite(".fromString should return")(
+                test(s"${DescriptionValue.getClass.getSimpleName} when correct parameters are provided")(
                     for
                         descriptionSting <- ZIO.succeed(Random.nextString(55))
                         mayBeDescriptionValue <- DescriptionValue.fromString(
@@ -20,7 +20,7 @@ object DescriptionValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeDescriptionValue.isInstanceOf[DescriptionValue])
                 ),
 
-                test("DescriptionValueError.DescriptionIsToShort when a to short mayBeDescription is provided")(
+                test(s"${DescriptionValueError.DescriptionIsToShort.getClass.getSimpleName} when a to short mayBeDescription is provided")(
                     for
                         toShortDescriptionSting <- ZIO.succeed(Random.nextString(5))
                         mayBeDescriptionValue <- DescriptionValue.fromString(

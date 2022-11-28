@@ -1,5 +1,7 @@
 package coreTest.useCaseTest
 
+import boundary.input.CreateSaleInput
+import boundary.repository.SaleRepository
 import core.useCase.CreateSaleUseCase
 import core.entity.SaleEntity
 import error.useCaseError.CreateSaleUseCaseError
@@ -20,9 +22,9 @@ import scala.util.control
 object CreateSaleUseCaseTest extends ZIOSpecDefault:
 
     def spec =
-        suite("CreateSaleUseCase test")(
-            suite("CreateSaleUseCase.createValidateSaveGetSale should return")(
-                test("SaleEntity when correct parameters are provided")(
+        suite(s"${CreateSaleUseCase.getClass.getSimpleName}")(
+            suite(".createValidateSaveGetSale should return")(
+                test(s"${SaleEntity.getClass.getSimpleName} when correct parameters are provided")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = CreateSaleInputMock,
@@ -32,7 +34,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == SaleEntityMock)
                 ),
 
-                test("CreateSaleUseCaseError.InputFailed(CreateSaleInputError.SaleTitleConstructionFailed(TitleValueError.TitleIsToShort) when a to short CreateSaleInput.saleTitle is provided")(
+                test(s"${CreateSaleUseCaseError.InputFailure.getClass.getSimpleName}(${CreateSaleInputError.SaleTitleConstructionFailed.getClass.getSimpleName}(${TitleValueError.TitleIsToShort.getClass.getSimpleName}) when a to short ${CreateSaleInput.getClass.getSimpleName}.saleTitle is provided")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = CreateSaleInputToShortTitleFailureMock,
@@ -45,7 +47,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == expected)
                 ),
 
-                test("CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure))) when a failure occurred in the SaleRepository")(
+                test(s"${CreateSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SaveSaleToRepositoryFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}))) when a failure occurred in the ${SaleRepository.getClass.getSimpleName}")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = CreateSaleInputMock,

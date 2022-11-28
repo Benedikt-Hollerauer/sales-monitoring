@@ -8,9 +8,9 @@ import zio.*
 object MoneyValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite("MoneyValue test")(
-            suite("MoneyValue.fromDouble should return")(
-                test("MoneyValue when correct parameters are provided")(
+        suite(s"${MoneyValue.getClass.getSimpleName}")(
+            suite(".fromDouble should return")(
+                test(s"${MoneyValue.getClass.getSimpleName} when correct parameters are provided")(
                     for
                         mayBeMoneyValue <- MoneyValue.fromDouble(
                             mayBeAmount = 5.11
@@ -22,7 +22,7 @@ object MoneyValueTest extends ZIOSpecDefault:
                         assertTrue(mayBeMoneyValue1DecimalPlace.isInstanceOf[MoneyValue] && mayBeMoneyValue1DecimalPlace.amount == 5.1)
                 ),
 
-                test("MoneyValueError.MayBeAmountIsNegative when a negative amount is provided")(
+                test(s"${MoneyValueError.MayBeAmountIsNegative.getClass.getSimpleName} when a negative amount is provided")(
                     for
                         mayBeMoneyValue <- MoneyValue.fromDouble(
                             mayBeAmount = -1.1
@@ -33,7 +33,7 @@ object MoneyValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeMoneyValue == expected)
                 ),
 
-                test("MoneyValueError.MoreThanTwoDecimalPlaces when more than 2 decimal places are provided")(
+                test(s"${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName} when more than 2 decimal places are provided")(
                     for
                         mayBeMoneyValue <- MoneyValue.fromDouble(
                             mayBeAmount = 15.37842364

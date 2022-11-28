@@ -1,7 +1,9 @@
 package coreTest.useCaseTest
 
+import boundary.input.CreateSaleInput
+import boundary.repository.SaleRepository
 import core.useCase.GetLatestSalesUseCase
-import mock.repositoryMock.{SaleRepositoryMock, SaleRepositoryFindLatestSalesByAmountFailureMock}
+import mock.repositoryMock.{SaleRepositoryFindLatestSalesByAmountFailureMock, SaleRepositoryMock}
 import mock.entityMock.SaleEntityMock
 import mock.inputMock.{GetLatestSalesInputMock, GetLatestSalesNegativeAmountOfSalesFailureInputMock}
 import mock.MockThrowable
@@ -16,8 +18,8 @@ import zio.*
 object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
 
     def spec =
-        suite("GetLatestSalesUseCase test")(
-            suite("GetLatestSalesUseCase.getValidateLatestSales should return")(
+        suite(s"${GetLatestSalesUseCase.getClass.getSimpleName}")(
+            suite(".getValidateLatestSales should return")(
                 test("NonEmptyChunk[SaleEntity] when correct parameters are provided")(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
@@ -28,7 +30,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == NonEmptyChunk(SaleEntityMock, SaleEntityMock))
                 ),
 
-                test("GetLatestSalesUseCaseError.InputFailed(GetLatestSalesInputError.AmountOfSalesConstructionFailed(AmountValueError.AmountIsZeroOrLess)) when a negative CreateSaleInput.amountOfSales is provided")(
+                test(s"${GetLatestSalesUseCaseError.InputFailure.getClass.getSimpleName}(${GetLatestSalesInputError.AmountOfSalesConstructionFailed.getClass.getSimpleName}(${AmountValueError.AmountIsNegative.getClass.getSimpleName})) when a negative ${CreateSaleInput.getClass.getSimpleName}.amountOfSales is provided")(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesNegativeAmountOfSalesFailureInputMock,
@@ -41,7 +43,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == expected)
                 ),
 
-                test("GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))) when a nothing was found in SaleRepository")(
+                test(s"${GetLatestSalesUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.FindLatestSalesByAmountFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}(${MockThrowable.getClass.getSimpleName})))) when a nothing was found in ${SaleRepository.getClass.getSimpleName}")(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesInputMock,

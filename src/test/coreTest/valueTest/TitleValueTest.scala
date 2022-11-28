@@ -2,15 +2,16 @@ package coreTest.valueTest
 
 import core.value.TitleValue
 import error.valueError.TitleValueError
+import mock.StringMock
 import zio.test.*
 import zio.*
 
 object TitleValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite("TitleValue test")(
-            suite("TitleValue.fromString should return")(
-                test("TitleValue when correct parameters are provided")(
+        suite(s"${TitleValue.getClass.getSimpleName}")(
+            suite(".fromString should return")(
+                test(s"${TitleValue.getClass.getSimpleName} when correct parameters are provided")(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = "saleTitle"
@@ -18,7 +19,7 @@ object TitleValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeTitleValue.isInstanceOf[TitleValue])
                 ),
 
-                test("TitleValueError.TitleIsToShort when a to short title is provided")(
+                test(s"${TitleValueError.TitleIsToShort.getClass.getSimpleName} when a to short title is provided")(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = ""
@@ -29,13 +30,13 @@ object TitleValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeTitleValue == expected)
                 ),
 
-                test("TitleValueError.TitleIsToLong when a to long title is provided")(
+                test(s"${TitleValueError.TitleIsToLong.getClass.getSimpleName} when a to long title is provided")(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
-                            mayBeTitle = "fYdKgZM85TDeyhEapTudDPWDdLXk7zGydb2V34HbfSArePYuUfqVurvFdAJanM6ey"
+                            mayBeTitle = StringMock.toLongString
                         ).cause
                         expected <- ZIO.fail(
-                            TitleValueError.TitleIsToLong("fYdKgZM85TDeyhEapTudDPWDdLXk7zGydb2V34HbfSArePYuUfqVurvFdAJanM6ey")
+                            TitleValueError.TitleIsToLong(StringMock.toLongString)
                         ).cause
                     yield assertTrue(mayBeTitleValue == expected)
                 )

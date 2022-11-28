@@ -1,6 +1,7 @@
 package coreTest.entityTest
 
 import core.value.MoneyValue
+import core.entity.SaleEntity
 import mock.entityMock.SaleEntityMock.*
 import error.entityError.SaleEntityError
 import error.valueError.MoneyValueError
@@ -11,16 +12,16 @@ import zio.*
 object SaleEntityTest extends ZIOSpecDefault:
 
     def spec =
-        suite("SaleEntity test")(
-            suite("SaleEntity.calculateProfit should return")(
-                test("MoneyValue when correct parameters are provided")(
+        suite(s"${SaleEntity.getClass.getSimpleName}")(
+            suite(".calculateProfit should return")(
+                test(s"${MoneyValue.getClass.getSimpleName} when correct parameters are provided")(
                     for
                         result <- new SaleEntityMock().calculateProfit
                     yield assertTrue(result.amount == 14.00) &&
                         assertTrue(result.isInstanceOf[MoneyValue])
                 ),
 
-                test("SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingPrice")(
+                test(s"${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingPrice")(
                     for
                         result <- saleEntityToManyDecimalPlacesSellingPriceFailureMock.calculateProfit.cause
                         expected <- ZIO.fail(
@@ -29,7 +30,7 @@ object SaleEntityTest extends ZIOSpecDefault:
                     yield assertTrue(result == expected)
                 ),
 
-                test("SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingCosts")(
+                test(s"${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingCosts")(
                     for
                         result <- saleEntityToManyDecimalPlacesSellingCostsFailureMock.calculateProfit.cause
                         expected <- ZIO.fail(

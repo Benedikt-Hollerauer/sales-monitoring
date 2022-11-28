@@ -11,9 +11,9 @@ import zio.*
 object CalculateProfitUseCaseTest extends ZIOSpecDefault:
 
     def spec =
-        suite("CalculateProfitUseCase test")(
-            suite("CalculateProfitUseCase.calculateProfit should return")(
-                test("MoneyValue when correct parameters are provided")(
+        suite(s"${CalculateProfitUseCase.getClass.getSimpleName}")(
+            suite(".calculateProfit should return")(
+                test(s"${MoneyValue.getClass.getSimpleName} when correct parameters are provided")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = new CalculateProfitInputMock()
@@ -23,7 +23,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                         assertTrue(useCaseResult.isInstanceOf[MoneyValue])
                 ),
 
-                test("CalculateProfitUseCaseError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingPrice")(
+                test(s"${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingPrice")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitInputMock.calculateProfitToManySellingPriceDecimalPlacesInputFailureMock,
@@ -35,7 +35,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == expected)
                 ),
 
-                test("CalculateProfitUseCaseError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces) when to many decimal places are provided for sellingCosts")(
+                test(s"${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingCosts")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitInputMock.calculateProfitToManySellingCostsDecimalPlacesInputFailureMock,
