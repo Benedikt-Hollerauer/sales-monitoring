@@ -11,10 +11,10 @@ case class CalculateProfitUseCase private(
     def calculateProfit: IO[SaleEntityError, MoneyValue] =
         input.sales.map(saleEntity =>
             saleEntity.calculateProfit
-        ).reduce((first, second) =>
+        ).reduce((firstMayBeProfit, secondMayBeProfit) =>
             for
-                firstProfit <- first
-                secondProfit <- second
+                firstProfit <- firstMayBeProfit
+                secondProfit <- secondMayBeProfit
                 mayBeProfit <- MoneyValue.fromDouble(
                     (BigDecimal.valueOf(firstProfit.amount) + BigDecimal.valueOf(secondProfit.amount)).toDouble
                 ).catchAll(error => ZIO.fail(SaleEntityError.ProfitConstructionFailed(error)))
