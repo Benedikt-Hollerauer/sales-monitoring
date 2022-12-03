@@ -23,26 +23,45 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                         assertTrue(useCaseResult.isInstanceOf[MoneyValue])
                 ),
 
-                test(s"${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingPrice")(
+                test(s"NonEmptyChunk(${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName})) when to many decimal places are provided for sellingPrice")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitInputMock.calculateProfitToManySellingPriceDecimalPlacesInputFailureMock,
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit.cause
                         expected <- ZIO.fail(
-                            SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
+                            NonEmptyChunk(
+                                SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
+                            )
                         ).cause
                     yield assertTrue(useCaseResult == expected)
                 ),
 
-                test(s"${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingCosts")(
+                test(s"NonEmptyChunk(${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName})) when to many decimal places are provided for sellingCosts")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitInputMock.calculateProfitToManySellingCostsDecimalPlacesInputFailureMock,
                         )
                         useCaseResult <- calculateProfitUseCase.calculateProfit.cause
                         expected <- ZIO.fail(
-                            SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
+                            NonEmptyChunk(
+                                SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
+                            )
+                        ).cause
+                    yield assertTrue(useCaseResult == expected)
+                ),
+
+                test(s"NonEmptyChunk(${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}), ${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingPrice and in sellingCosts")(
+                    for
+                        calculateProfitUseCase <- CalculateProfitUseCase.from(
+                            input = CalculateProfitInputMock.calculateProfitToManySellingCostsAndSellingPriceDecimalPlacesInputFailureMock,
+                        )
+                        useCaseResult <- calculateProfitUseCase.calculateProfit.cause
+                        expected <- ZIO.fail(
+                            NonEmptyChunk(
+                                SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795)),
+                                SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
+                            )
                         ).cause
                     yield assertTrue(useCaseResult == expected)
                 )
