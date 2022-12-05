@@ -2,10 +2,9 @@ package coreTest.entityTest
 
 import core.value.MoneyValue
 import core.entity.SaleEntity
-import mock.entityMock.SaleEntityMock.*
+import mock.entityMock.SaleEntityMock
 import error.entityError.SaleEntityError
 import error.valueError.MoneyValueError
-import mock.entityMock.SaleEntityMock
 import zio.test.*
 import zio.*
 
@@ -23,7 +22,7 @@ object SaleEntityTest extends ZIOSpecDefault:
 
                 test(s"${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingPrice")(
                     for
-                        result <- saleEntityToManyDecimalPlacesSellingPriceFailureMock.calculateProfit.cause
+                        result <- SaleEntityMock.toManyDecimalPlacesSellingPriceFailureMock.calculateProfit.cause
                         expected <- ZIO.fail(
                             SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
                         ).cause
@@ -32,7 +31,7 @@ object SaleEntityTest extends ZIOSpecDefault:
 
                 test(s"${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingCosts")(
                     for
-                        result <- saleEntityToManyDecimalPlacesSellingCostsFailureMock.calculateProfit.cause
+                        result <- SaleEntityMock.toManyDecimalPlacesSellingCostsFailureMock.calculateProfit.cause
                         expected <- ZIO.fail(
                             SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
                         ).cause

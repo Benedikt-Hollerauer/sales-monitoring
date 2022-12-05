@@ -18,8 +18,8 @@ class SaleEntityMock extends SaleEntity(
 
 object SaleEntityMock extends SaleEntityMock:
 
-    val saleEntityToShortTitleFailureMock = new SaleEntityMock().copy(title = TitleValue.fromString(""))
+    val toShortTitleFailureMock = new SaleEntityMock().copy(title = TitleValue.fromString(""))
 
-    val saleEntityToManyDecimalPlacesSellingPriceFailureMock = new SaleEntityMock().copy(sellingPrice = MoneyValue.fromDouble(124.32564643))
+    val toManyDecimalPlacesSellingPriceFailureMock = new SaleEntityMock().copy(sellingPrice = MoneyValue.fromDouble(124.32564643))
 
-    val saleEntityToManyDecimalPlacesSellingCostsFailureMock = new SaleEntityMock().copy(sellingCosts = MoneyValue.fromDouble(1.347589795))
+    val toManyDecimalPlacesSellingCostsFailureMock = new SaleEntityMock().copy(sellingCosts = MoneyValue.fromDouble(1.347589795))

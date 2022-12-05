@@ -5,12 +5,12 @@ import boundary.input.CalculateProfitInput
 import mock.entityMock.SaleEntityMock
 import zio.*
 
-class CalculateProfitInputMock() extends CalculateProfitInput(
+class CalculateProfitInputMock extends CalculateProfitInput(
     sales = NonEmptyChunk(SaleEntityMock, SaleEntityMock)
 )
 
 object CalculateProfitInputMock:
 
-    val calculateProfitToManySellingPriceDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.saleEntityToManyDecimalPlacesSellingPriceFailureMock, SaleEntityMock.saleEntityToManyDecimalPlacesSellingPriceFailureMock))
+    val toManySellingPriceDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.toManyDecimalPlacesSellingPriceFailureMock, SaleEntityMock.toManyDecimalPlacesSellingPriceFailureMock))
 
-    val calculateProfitToManySellingCostsDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.saleEntityToManyDecimalPlacesSellingCostsFailureMock, SaleEntityMock.saleEntityToManyDecimalPlacesSellingCostsFailureMock))
+    val toManySellingCostsDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.toManyDecimalPlacesSellingCostsFailureMock, SaleEntityMock.saleEntityoManyDecimalPlacesSellingCostsFailureMock))
