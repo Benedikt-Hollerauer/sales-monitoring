@@ -8,17 +8,17 @@ import zio.*
 case class CalculateProfitUseCase private(
     input: CalculateProfitInput
 ):
-    def calculateProfit: IO[SaleEntityError, MoneyValue] =
+    def calculateProfit: IO[NonEmptyChunk[SaleEntityError], MoneyValue] =
         input.sales.map(saleEntity =>
             saleEntity.calculateProfit
         ).reduce((firstMayBeProfit, secondMayBeProfit) =>
-            for
+            (for
                 firstProfit <- firstMayBeProfit
                 secondProfit <- secondMayBeProfit
                 mayBeProfit <- MoneyValue.fromDouble(
                     (BigDecimal.valueOf(firstProfit.amount) + BigDecimal.valueOf(secondProfit.amount)).toDouble
                 ).catchAll(error => ZIO.fail(SaleEntityError.ProfitConstructionFailed(error)))
-            yield mayBeProfit
+            yield mayBeProfit).catchAll(x => ZIO.fail(NonEmptyChunk(x)))
         )
 
 object CalculateProfitUseCase:
