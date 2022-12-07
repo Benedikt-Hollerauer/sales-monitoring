@@ -42,7 +42,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                                 GetLatestSalesUseCaseError.InputFailure(GetLatestSalesInputError.AmountOfSalesConstructionFailed(AmountValueError.AmountIsNegative(-1)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test(s"NonEmptyChunk(${GetLatestSalesUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.FindLatestSalesByAmountFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}(${MockThrowable.getClass.getSimpleName}))))) when a nothing was found in ${SaleRepository.getClass.getSimpleName}")(
@@ -57,7 +57,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                                 GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test("NonEmptyChunk with multiple errors when multiple inputs are wrong")(
@@ -73,7 +73,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                                 GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 )
             )
         )

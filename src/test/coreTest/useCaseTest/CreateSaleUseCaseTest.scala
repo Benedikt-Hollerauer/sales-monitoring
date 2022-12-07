@@ -10,7 +10,7 @@ import error.valueError.TitleValueError
 import error.repositoryError.SaleRepositoryError
 import error.repositoryError.RepositoryError
 import mock.entityMock.SaleEntityMock
-import mock.inputMock.{CreateSaleInputMock, toShortTitleFailureMock}
+import mock.inputMock.CreateSaleInputMock
 import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySaveSaleToRepositoryFailureMock}
 import mock.MockThrowable
 import zio.test.Assertion.*
@@ -42,9 +42,11 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
                         expected <- ZIO.fail(
-                            CreateSaleUseCaseError.InputFailure(CreateSaleInputError.SaleTitleConstructionFailed(TitleValueError.TitleIsToShort("")))
+                            NonEmptyChunk(
+                                CreateSaleUseCaseError.InputFailure(CreateSaleInputError.SaleTitleConstructionFailed(TitleValueError.TitleIsToShort("")))
+                            )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test(s"NonEmptyChunk(${CreateSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SaveSaleToRepositoryFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName})))) when a failure occurred in the ${SaleRepository.getClass.getSimpleName}")(
@@ -55,9 +57,11 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- createSaleUseCase.createValidateSaveGetSale.cause
                         expected <- ZIO.fail(
-                            CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure(MockThrowable)))
+                            NonEmptyChunk(
+                                CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure(MockThrowable)))
+                            )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test("NonEmptyChunk with multiple errors when multiple inputs are wrong")(
@@ -73,7 +77,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                                 CreateSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SaveSaleToRepositoryFailed(RepositoryError.Failure(MockThrowable)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 )
             )
         )

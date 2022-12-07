@@ -13,4 +13,6 @@ object CalculateProfitInputMock:
 
     val toManySellingPriceDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.toManyDecimalPlacesSellingPriceFailureMock, SaleEntityMock.toManyDecimalPlacesSellingPriceFailureMock))
 
-    val toManySellingCostsDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.toManyDecimalPlacesSellingCostsFailureMock, SaleEntityMock.saleEntityoManyDecimalPlacesSellingCostsFailureMock))
+    val toManySellingCostsDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.toManyDecimalPlacesSellingCostsFailureMock, SaleEntityMock.toManyDecimalPlacesSellingCostsFailureMock))
+
+    val toManySellingCostsAndSellingPriceDecimalPlacesInputFailureMock = new CalculateProfitInputMock().copy(sales = NonEmptyChunk(SaleEntityMock.toManyDecimalPlacesSellingPriceFailureMock, SaleEntityMock.toManyDecimalPlacesSellingCostsFailureMock))

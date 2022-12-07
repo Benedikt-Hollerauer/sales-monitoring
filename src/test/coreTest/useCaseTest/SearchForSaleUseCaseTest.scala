@@ -42,7 +42,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                                 SearchForSaleUseCaseError.InputFailure(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort("invalid")))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test(s"${SearchForSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SearchSalesByPlatformFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}))) when a failure occurred in the ${SaleRepository.getClass.getSimpleName}")(
@@ -57,7 +57,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                                 SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test(s"${SearchForSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SearchSalesByDateSpanFailed.getClass.getSimpleName}(RepositoryError.NotFound))) when no sales were found in ${SaleRepository.getClass.getSimpleName}")(
@@ -72,7 +72,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                                 SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByDateSpanFailed(RepositoryError.Failure(MockThrowable)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test("NonEmptyChunk with multiple errors when multiple inputs are wrong")(
@@ -88,7 +88,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                                 SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 )
             )
         )

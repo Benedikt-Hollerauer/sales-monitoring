@@ -34,7 +34,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                                 SaleEntityError.SellingPriceConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(124.32564643))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test(s"NonEmptyChunk(${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName})) when to many decimal places are provided for sellingCosts")(
@@ -48,7 +48,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                                 SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 ),
 
                 test("NonEmptyChunk with multiple errors when multiple inputs are wrong")(
@@ -63,7 +63,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                                 SaleEntityError.SellingCostsConstructionFailed(MoneyValueError.MoreThanTwoDecimalPlaces(1.347589795))
                             )
                         ).cause
-                    yield assertTrue(useCaseResult == expected)
+                    yield assertTrue(useCaseResult.contains(expected))
                 )
             )
         )
