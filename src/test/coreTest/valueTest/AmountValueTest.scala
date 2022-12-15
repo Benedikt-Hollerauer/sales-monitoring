@@ -8,9 +8,9 @@ import zio.*
 object AmountValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite(s"${AmountValue.getClass.getSuperclass}")(
+        suite(s"${AmountValue.getClass.getSimpleName}")(
             suite(".fromInt should return")(
-                test(s"${AmountValue.getClass.getSuperclass}")(
+                test(s"${AmountValue.getClass.getSimpleName}")(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = 1

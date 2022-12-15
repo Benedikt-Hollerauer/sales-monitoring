@@ -47,7 +47,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${CreateSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SaveSaleToRepositoryFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName})))")(
+                test(s"${CreateSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SaveSaleToRepositoryFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}))")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = new CreateSaleInputMock,

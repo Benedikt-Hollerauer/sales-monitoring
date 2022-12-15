@@ -56,7 +56,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${SearchForSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SearchSalesByDateSpanFailed.getClass.getSimpleName}(${RepositoryError.NotFound.getClass.getSimpleName})))")(
+                test(s"${SearchForSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SearchSalesByDateSpanFailed.getClass.getSimpleName}(RepositoryError.NotFound)))")(
                     for
                         searchForSaleUseCase <- SearchForSaleUseCase.from(
                             input = SearchForSaleInputMock,
