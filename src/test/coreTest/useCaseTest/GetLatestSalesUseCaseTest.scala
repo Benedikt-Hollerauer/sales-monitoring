@@ -20,7 +20,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
     def spec =
         suite(s"${GetLatestSalesUseCase.getClass.getSimpleName}")(
             suite(".getValidateLatestSales should return")(
-                test("NonEmptyChunk[SaleEntity] when correct parameters are provided")(
+                test("NonEmptyChunk[SaleEntity]")(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesInputMock,
@@ -30,7 +30,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == NonEmptyChunk(SaleEntityMock, SaleEntityMock))
                 ),
 
-                test(s"${GetLatestSalesUseCaseError.InputFailure.getClass.getSimpleName}(${GetLatestSalesInputError.AmountOfSalesConstructionFailed.getClass.getSimpleName}(${AmountValueError.AmountIsNegative.getClass.getSimpleName})) when a negative ${CreateSaleInput.getClass.getSimpleName}.amountOfSales is provided")(
+                test(s"${GetLatestSalesUseCaseError.InputFailure.getClass.getSimpleName}(${GetLatestSalesInputError.AmountOfSalesConstructionFailed.getClass.getSimpleName}(${AmountValueError.AmountIsNegative.getClass.getSimpleName}))")(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesNegativeAmountOfSalesFailureInputMock,
@@ -43,7 +43,7 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${GetLatestSalesUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.FindLatestSalesByAmountFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}(${MockThrowable.getClass.getSimpleName})))) when a nothing was found in ${SaleRepository.getClass.getSimpleName}")(
+                test(s"${GetLatestSalesUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.FindLatestSalesByAmountFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}(${MockThrowable.getClass.getSimpleName}))))")(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesInputMock,

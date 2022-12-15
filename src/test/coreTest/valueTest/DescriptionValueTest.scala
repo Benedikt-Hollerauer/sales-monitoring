@@ -11,7 +11,7 @@ object DescriptionValueTest extends ZIOSpecDefault:
     def spec =
         suite(s"${DescriptionValue.getClass.getSimpleName}")(
             suite(".fromString should return")(
-                test(s"${DescriptionValue.getClass.getSimpleName} when correct parameters are provided")(
+                test(s"${DescriptionValue.getClass.getSimpleName}")(
                     for
                         descriptionSting <- ZIO.succeed(Random.nextString(55))
                         mayBeDescriptionValue <- DescriptionValue.fromString(
@@ -20,7 +20,7 @@ object DescriptionValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeDescriptionValue.isInstanceOf[DescriptionValue])
                 ),
 
-                test(s"${DescriptionValueError.DescriptionIsToShort.getClass.getSimpleName} when a to short mayBeDescription is provided")(
+                test(s"${DescriptionValueError.DescriptionIsToShort.getClass.getSimpleName}")(
                     for
                         toShortDescriptionSting <- ZIO.succeed(Random.nextString(5))
                         mayBeDescriptionValue <- DescriptionValue.fromString(

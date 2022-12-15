@@ -10,7 +10,7 @@ object AmountValueTest extends ZIOSpecDefault:
     def spec =
         suite(s"${AmountValue.getClass.getSuperclass}")(
             suite(".fromInt should return")(
-                test(s"${AmountValue.getClass.getSuperclass} when correct parameters are provided")(
+                test(s"${AmountValue.getClass.getSuperclass}")(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = 1
@@ -18,7 +18,7 @@ object AmountValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeAmountValue.isInstanceOf[AmountValue])
                 ),
 
-                test(s"${AmountValueError.AmountIsZero.getClass.getSimpleName} when a 0 is provided as mayBeAmount")(
+                test(s"${AmountValueError.AmountIsZero.getClass.getSimpleName}")(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = 0
@@ -29,7 +29,7 @@ object AmountValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeAmountValue == expected)
                 ),
 
-                test(s"${AmountValueError.AmountIsNegative.getClass.getSimpleName} when a negative mayBeAmount is provided")(
+                test(s"${AmountValueError.AmountIsNegative.getClass.getSimpleName}")(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = -5

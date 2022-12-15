@@ -11,7 +11,7 @@ object TitleValueTest extends ZIOSpecDefault:
     def spec =
         suite(s"${TitleValue.getClass.getSimpleName}")(
             suite(".fromString should return")(
-                test(s"${TitleValue.getClass.getSimpleName} when correct parameters are provided")(
+                test(s"${TitleValue.getClass.getSimpleName}")(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = "saleTitle"
@@ -19,7 +19,7 @@ object TitleValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeTitleValue.isInstanceOf[TitleValue])
                 ),
 
-                test(s"${TitleValueError.TitleIsToShort.getClass.getSimpleName} when a to short title is provided")(
+                test(s"${TitleValueError.TitleIsToShort.getClass.getSimpleName}")(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = ""
@@ -30,7 +30,7 @@ object TitleValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeTitleValue == expected)
                 ),
 
-                test(s"${TitleValueError.TitleIsToLong.getClass.getSimpleName} when a to long title is provided")(
+                test(s"${TitleValueError.TitleIsToLong.getClass.getSimpleName}")(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = StringMock.toLongString

@@ -13,7 +13,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
     def spec =
         suite(s"${CalculateProfitUseCase.getClass.getSimpleName}")(
             suite(".calculateProfit should return")(
-                test(s"${MoneyValue.getClass.getSimpleName} when correct parameters are provided")(
+                test(s"${MoneyValue.getClass.getSimpleName}")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = new CalculateProfitInputMock
@@ -23,7 +23,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                         assertTrue(useCaseResult.isInstanceOf[MoneyValue])
                 ),
 
-                test(s"${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingPrice")(
+                test(s"${SaleEntityError.SellingPriceConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName})")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitInputMock.toManySellingPriceDecimalPlacesInputFailureMock,
@@ -35,7 +35,7 @@ object CalculateProfitUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName}) when to many decimal places are provided for sellingCosts")(
+                test(s"${SaleEntityError.SellingCostsConstructionFailed.getClass.getSimpleName}(${MoneyValueError.MoreThanTwoDecimalPlaces.getClass.getSimpleName})")(
                     for
                         calculateProfitUseCase <- CalculateProfitUseCase.from(
                             input = CalculateProfitInputMock.toManySellingCostsDecimalPlacesInputFailureMock,

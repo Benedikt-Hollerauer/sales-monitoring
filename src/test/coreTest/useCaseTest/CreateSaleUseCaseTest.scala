@@ -24,7 +24,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
     def spec =
         suite(s"${CreateSaleUseCase.getClass.getSimpleName}")(
             suite(".createValidateSaveGetSale should return")(
-                test(s"${SaleEntity.getClass.getSimpleName} when correct parameters are provided")(
+                test(s"${SaleEntity.getClass.getSimpleName}")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = new CreateSaleInputMock,
@@ -34,7 +34,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == SaleEntityMock)
                 ),
 
-                test(s"${CreateSaleUseCaseError.InputFailure.getClass.getSimpleName}(${CreateSaleInputError.SaleTitleConstructionFailed.getClass.getSimpleName}(${TitleValueError.TitleIsToShort.getClass.getSimpleName}) when a to short ${CreateSaleInput.getClass.getSimpleName}.saleTitle is provided")(
+                test(s"${CreateSaleUseCaseError.InputFailure.getClass.getSimpleName}(${CreateSaleInputError.SaleTitleConstructionFailed.getClass.getSimpleName}(${TitleValueError.TitleIsToShort.getClass.getSimpleName})")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = CreateSaleInputMock.toShortTitleFailureMock,
@@ -47,7 +47,7 @@ object CreateSaleUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${CreateSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SaveSaleToRepositoryFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}))) when a failure occurred in the ${SaleRepository.getClass.getSimpleName}")(
+                test(s"${CreateSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SaveSaleToRepositoryFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName})))")(
                     for
                         createSaleUseCase <- CreateSaleUseCase.from(
                             input = new CreateSaleInputMock,
