@@ -38,9 +38,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                         expected <- ZIO.fail(
-                            NonEmptyChunk(
-                                SearchForSaleUseCaseError.InputFailure(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort("invalid")))
-                            )
+                            SearchForSaleUseCaseError.InputFailure(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort("invalid")))
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
@@ -53,9 +51,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                         expected <- ZIO.fail(
-                            NonEmptyChunk(
-                                SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
-                            )
+                            SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
@@ -68,25 +64,7 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                         expected <- ZIO.fail(
-                            NonEmptyChunk(
-                                SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByDateSpanFailed(RepositoryError.Failure(MockThrowable)))
-                            )
-                        ).cause
-                    yield assertTrue(useCaseResult.contains(expected))
-                ),
-
-                test("NonEmptyChunk with multiple errors when multiple inputs are wrong")(
-                    for
-                        searchForSaleUseCase <- SearchForSaleUseCase.from(
-                            input = SearchForSaleToShortDescriptionInputFailureMock,
-                            saleRepository = SaleRepositorySearchSalesByPlatformFailureMock
-                        )
-                        useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
-                        expected <- ZIO.fail(
-                            NonEmptyChunk(
-                                SearchForSaleUseCaseError.InputFailure(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort("invalid"))),
-                                SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
-                            )
+                            SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByDateSpanFailed(RepositoryError.Failure(MockThrowable)))
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 )
