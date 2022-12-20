@@ -1,10 +1,11 @@
 package mock.inputMock
 
 import boundary.input.SearchForSaleInput
-import core.value.{DescriptionValue, TitleValue, PlatformValue}
+import core.value.{DescriptionValue, PlatformValue, TitleValue}
+import mock.StringMock
 import zio.*
-import scala.util.Random
 
+import scala.util.Random
 import java.time.LocalDate
 
 object SearchForSaleInputMock extends SearchForSaleInput(
@@ -15,5 +16,5 @@ object SearchForSaleInputMock extends SearchForSaleInput(
 )
 
 val SearchForSaleToShortDescriptionInputFailureMock: SearchForSaleInput = SearchForSaleInputMock.copy(
-    saleDescription = DescriptionValue.fromString("invalid")
+    saleDescription = DescriptionValue.fromString(StringMock.toShortString)
 )

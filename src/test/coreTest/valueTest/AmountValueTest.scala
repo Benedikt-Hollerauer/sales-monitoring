@@ -8,9 +8,15 @@ import zio.*
 object AmountValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite(s"${AmountValue.getClass.getSimpleName}")(
-            suite(".fromInt should return")(
-                test(s"${AmountValue.getClass.getSimpleName}")(
+        suite(
+            AmountValue.toString
+        )(
+            suite(
+                ".fromInt should return"
+            )(
+                test(
+                    AmountValue.toString
+                )(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = 1
@@ -18,7 +24,9 @@ object AmountValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeAmountValue.isInstanceOf[AmountValue])
                 ),
 
-                test(s"${AmountValueError.AmountIsZero.getClass.getSimpleName}")(
+                test(
+                    AmountValueError.AmountIsZero(0).toString
+                )(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = 0
@@ -29,7 +37,9 @@ object AmountValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeAmountValue == expected)
                 ),
 
-                test(s"${AmountValueError.AmountIsNegative.getClass.getSimpleName}")(
+                test(
+                    AmountValueError.AmountIsNegative(-5).toString
+                )(
                     for
                         mayBeAmountValue <- AmountValue.fromInt(
                             mayBeAmount = -5

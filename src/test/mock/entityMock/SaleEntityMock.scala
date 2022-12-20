@@ -2,6 +2,7 @@ package mock.entityMock
 
 import core.entity.SaleEntity
 import core.value.{DescriptionValue, MoneyValue, PlatformValue, TitleValue}
+import mock.StringMock
 
 import java.time.LocalDate
 import scala.util.Random
@@ -18,7 +19,7 @@ class SaleEntityMock extends SaleEntity(
 
 object SaleEntityMock extends SaleEntityMock:
 
-    val toShortTitleFailureMock = new SaleEntityMock().copy(title = TitleValue.fromString(""))
+    val toShortTitleFailureMock = new SaleEntityMock().copy(title = TitleValue.fromString(StringMock.toShortString))
 
     val toManyDecimalPlacesSellingPriceFailureMock = new SaleEntityMock().copy(sellingPrice = MoneyValue.fromDouble(124.32564643))
 

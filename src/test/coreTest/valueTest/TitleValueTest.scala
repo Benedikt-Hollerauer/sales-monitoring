@@ -9,9 +9,15 @@ import zio.*
 object TitleValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite(s"${TitleValue.getClass.getSimpleName}")(
-            suite(".fromString should return")(
-                test(s"${TitleValue.getClass.getSimpleName}")(
+        suite(
+            TitleValue.toString
+        )(
+            suite(
+                ".fromString should return"
+            )(
+                test(
+                    TitleValue.toString
+                )(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = "saleTitle"
@@ -19,18 +25,26 @@ object TitleValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeTitleValue.isInstanceOf[TitleValue])
                 ),
 
-                test(s"${TitleValueError.TitleIsToShort.getClass.getSimpleName}")(
+                test(
+                    TitleValueError.TitleIsToShort(
+                        StringMock.toShortString
+                    ).toString
+                )(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
-                            mayBeTitle = ""
+                            mayBeTitle = StringMock.toShortString
                         ).cause
                         expected <- ZIO.fail(
-                            TitleValueError.TitleIsToShort("")
+                            TitleValueError.TitleIsToShort(StringMock.toShortString)
                         ).cause
                     yield assertTrue(mayBeTitleValue == expected)
                 ),
 
-                test(s"${TitleValueError.TitleIsToLong.getClass.getSimpleName}")(
+                test(
+                    TitleValueError.TitleIsToLong(
+                        StringMock.toLongString
+                    ).toString
+                )(
                     for
                         mayBeTitleValue <- TitleValue.fromString(
                             mayBeTitle = StringMock.toLongString

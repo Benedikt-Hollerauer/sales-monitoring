@@ -2,6 +2,7 @@ package coreTest.useCaseTest
 
 import boundary.input.CreateSaleInput
 import boundary.repository.SaleRepository
+import core.entity.SaleEntity
 import core.useCase.GetLatestSalesUseCase
 import mock.repositoryMock.{SaleRepositoryFindLatestSalesByAmountFailureMock, SaleRepositoryMock}
 import mock.entityMock.SaleEntityMock
@@ -18,9 +19,15 @@ import zio.*
 object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
 
     def spec =
-        suite(s"${GetLatestSalesUseCase.getClass.getSimpleName}")(
-            suite(".getValidateLatestSales should return")(
-                test("NonEmptyChunk[SaleEntity]")(
+        suite(
+            GetLatestSalesUseCase.toString
+        )(
+            suite(
+                ".getValidateLatestSales should return"
+            )(
+                test(
+                    "NonEmptyChunk[SaleEntity]"
+                )(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesInputMock,
@@ -30,7 +37,13 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                     yield assertTrue(useCaseResult == NonEmptyChunk(SaleEntityMock, SaleEntityMock))
                 ),
 
-                test(s"${GetLatestSalesUseCaseError.InputFailure.getClass.getSimpleName}(${GetLatestSalesInputError.AmountOfSalesConstructionFailed.getClass.getSimpleName}(${AmountValueError.AmountIsNegative.getClass.getSimpleName}))")(
+                test(
+                    GetLatestSalesUseCaseError.InputFailure(
+                        GetLatestSalesInputError.AmountOfSalesConstructionFailed(
+                            AmountValueError.AmountIsNegative(-1)
+                        )
+                    ).toString
+                )(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesNegativeAmountOfSalesFailureInputMock,
@@ -38,12 +51,22 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- getLatestSalesUseCase.getValidateLatestSales.cause
                         expected <- ZIO.fail(
-                            GetLatestSalesUseCaseError.InputFailure(GetLatestSalesInputError.AmountOfSalesConstructionFailed(AmountValueError.AmountIsNegative(-1)))
+                            GetLatestSalesUseCaseError.InputFailure(
+                                GetLatestSalesInputError.AmountOfSalesConstructionFailed(
+                                    AmountValueError.AmountIsNegative(-1)
+                                )
+                            )
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${GetLatestSalesUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.FindLatestSalesByAmountFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName}(${MockThrowable.getClass.getSimpleName}))))")(
+                test(
+                    GetLatestSalesUseCaseError.SaleRepositoryFailure(
+                        SaleRepositoryError.FindLatestSalesByAmountFailed(
+                            RepositoryError.Failure(MockThrowable)
+                        )
+                    ).toString
+                )(
                     for
                         getLatestSalesUseCase <- GetLatestSalesUseCase.from(
                             input = GetLatestSalesInputMock,
@@ -51,7 +74,11 @@ object GetLatestSalesUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- getLatestSalesUseCase.getValidateLatestSales.cause
                         expected <- ZIO.fail(
-                            GetLatestSalesUseCaseError.SaleRepositoryFailure(SaleRepositoryError.FindLatestSalesByAmountFailed(RepositoryError.Failure(MockThrowable)))
+                            GetLatestSalesUseCaseError.SaleRepositoryFailure(
+                                SaleRepositoryError.FindLatestSalesByAmountFailed(
+                                    RepositoryError.Failure(MockThrowable)
+                                )
+                            )
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 )

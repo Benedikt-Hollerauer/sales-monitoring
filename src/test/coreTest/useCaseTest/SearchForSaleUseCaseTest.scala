@@ -4,9 +4,10 @@ import boundary.input.CreateSaleInput
 import core.useCase.SearchForSaleUseCase
 import core.value.DescriptionValue
 import boundary.repository.SaleRepository
+import core.entity.SaleEntity
 import mock.repositoryMock.{SaleRepositoryMock, SaleRepositorySearchSalesByDateSpanFailureMock, SaleRepositorySearchSalesByPlatformFailureMock}
 import mock.inputMock.{SearchForSaleInputMock, SearchForSaleToShortDescriptionInputFailureMock}
-import mock.MockThrowable
+import mock.{MockThrowable, StringMock}
 import mock.entityMock.SaleEntityMock
 import error.useCaseError.SearchForSaleUseCaseError
 import error.inputError.SearchForSaleInputError
@@ -18,19 +19,44 @@ import zio.*
 object SearchForSaleUseCaseTest extends ZIOSpecDefault:
 
     def spec =
-        suite(s"${SearchForSaleUseCase.getClass.getSimpleName}")(
-            suite(".searchValidateGetSales should return")(
-                test("NonEmptyChunk[SaleEntity]")(
+        suite(
+            SearchForSaleUseCase.toString
+        )(
+            suite(
+                ".searchValidateGetSales should return"
+            )(
+                test(
+                    "NonEmptyChunk[SaleEntity]"
+                )(
                     for
                         searchForSaleUseCase <- SearchForSaleUseCase.from(
                             input = SearchForSaleInputMock,
                             saleRepository = SaleRepositoryMock()
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales
-                    yield assertTrue(useCaseResult == NonEmptyChunk(SaleEntityMock, SaleEntityMock, SaleEntityMock, SaleEntityMock, SaleEntityMock, SaleEntityMock, SaleEntityMock, SaleEntityMock))
+                    yield assertTrue(
+                        useCaseResult == NonEmptyChunk(
+                            SaleEntityMock,
+                            SaleEntityMock,
+                            SaleEntityMock,
+                            SaleEntityMock,
+                            SaleEntityMock,
+                            SaleEntityMock,
+                            SaleEntityMock,
+                            SaleEntityMock
+                        )
+                    )
                 ),
 
-                test(s"${SearchForSaleUseCaseError.InputFailure.getClass.getSimpleName}(${SearchForSaleInputError.SaleDescriptionConstructionFailed.getClass.getSimpleName}(${DescriptionValueError.DescriptionIsToShort.getClass.getSimpleName}))")(
+                test(
+                    SearchForSaleUseCaseError.InputFailure(
+                        SearchForSaleInputError.SaleDescriptionConstructionFailed(
+                            DescriptionValueError.DescriptionIsToShort(
+                                StringMock.toShortString
+                            )
+                        )
+                    ).toString
+                )(
                     for
                         searchForSaleUseCase <- SearchForSaleUseCase.from(
                             input = SearchForSaleToShortDescriptionInputFailureMock,
@@ -38,12 +64,24 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                         expected <- ZIO.fail(
-                            SearchForSaleUseCaseError.InputFailure(SearchForSaleInputError.SaleDescriptionConstructionFailed(DescriptionValueError.DescriptionIsToShort("invalid")))
+                            SearchForSaleUseCaseError.InputFailure(
+                                SearchForSaleInputError.SaleDescriptionConstructionFailed(
+                                    DescriptionValueError.DescriptionIsToShort(
+                                        StringMock.toShortString
+                                    )
+                                )
+                            )
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${SearchForSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SearchSalesByPlatformFailed.getClass.getSimpleName}(${RepositoryError.Failure.getClass.getSimpleName})))")(
+                test(
+                    SearchForSaleUseCaseError.SaleRepositoryFailure(
+                        SaleRepositoryError.SearchSalesByPlatformFailed(
+                            RepositoryError.Failure(MockThrowable)
+                        )
+                    ).toString
+                )(
                     for
                         searchForSaleUseCase <- SearchForSaleUseCase.from(
                             input = SearchForSaleInputMock,
@@ -51,12 +89,22 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                         expected <- ZIO.fail(
-                            SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByPlatformFailed(RepositoryError.Failure(MockThrowable)))
+                            SearchForSaleUseCaseError.SaleRepositoryFailure(
+                                SaleRepositoryError.SearchSalesByPlatformFailed(
+                                    RepositoryError.Failure(MockThrowable)
+                                )
+                            )
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 ),
 
-                test(s"${SearchForSaleUseCaseError.SaleRepositoryFailure.getClass.getSimpleName}(${SaleRepositoryError.SearchSalesByDateSpanFailed.getClass.getSimpleName}(RepositoryError.NotFound)))")(
+                test(
+                    SearchForSaleUseCaseError.SaleRepositoryFailure(
+                        SaleRepositoryError.SearchSalesByDateSpanFailed(
+                            RepositoryError.NotFound
+                        )
+                    ).toString
+                )(
                     for
                         searchForSaleUseCase <- SearchForSaleUseCase.from(
                             input = SearchForSaleInputMock,
@@ -64,7 +112,11 @@ object SearchForSaleUseCaseTest extends ZIOSpecDefault:
                         )
                         useCaseResult <- searchForSaleUseCase.searchValidateGetSales.cause
                         expected <- ZIO.fail(
-                            SearchForSaleUseCaseError.SaleRepositoryFailure(SaleRepositoryError.SearchSalesByDateSpanFailed(RepositoryError.Failure(MockThrowable)))
+                            SearchForSaleUseCaseError.SaleRepositoryFailure(
+                                SaleRepositoryError.SearchSalesByDateSpanFailed(
+                                    RepositoryError.Failure(MockThrowable)
+                                )
+                            )
                         ).cause
                     yield assertTrue(useCaseResult.contains(expected))
                 )

@@ -2,16 +2,22 @@ package coreTest.valueTest
 
 import core.value.DescriptionValue
 import error.valueError.DescriptionValueError
+import mock.StringMock
 import zio.test.*
 import zio.*
+
 import scala.util.Random
 
 object DescriptionValueTest extends ZIOSpecDefault:
 
     def spec =
-        suite(s"${DescriptionValue.getClass.getSimpleName}")(
-            suite(".fromString should return")(
-                test(s"${DescriptionValue.getClass.getSimpleName}")(
+        suite(
+            DescriptionValue.toString
+        )(
+            suite(
+                ".fromString should return"
+            )(
+                test(DescriptionValue.toString)(
                     for
                         descriptionSting <- ZIO.succeed(Random.nextString(55))
                         mayBeDescriptionValue <- DescriptionValue.fromString(
@@ -20,14 +26,19 @@ object DescriptionValueTest extends ZIOSpecDefault:
                     yield assertTrue(mayBeDescriptionValue.isInstanceOf[DescriptionValue])
                 ),
 
-                test(s"${DescriptionValueError.DescriptionIsToShort.getClass.getSimpleName}")(
+                test(
+                    DescriptionValueError.DescriptionIsToShort(
+                        StringMock.toShortString
+                    ).toString
+                )(
                     for
-                        toShortDescriptionSting <- ZIO.succeed(Random.nextString(5))
                         mayBeDescriptionValue <- DescriptionValue.fromString(
-                            mayBeDescription = toShortDescriptionSting
+                            mayBeDescription = StringMock.toShortString
                         ).cause
                         expected <- ZIO.fail(
-                            DescriptionValueError.DescriptionIsToShort(toShortDescriptionSting)
+                            DescriptionValueError.DescriptionIsToShort(
+                                StringMock.toShortString
+                            )
                         ).cause
                     yield assertTrue(mayBeDescriptionValue == expected)
                 )
