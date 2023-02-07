@@ -6,7 +6,7 @@ Compile / scalaSource := baseDirectory.value / "src/main"
 
 Test / scalaSource := baseDirectory.value / "src/test"
 
-val zioVersion = "2.0.6"
+val zioVersion = "2.0.7"
 
 // ZIO
 libraryDependencies += "dev.zio" %% "zio" % zioVersion
