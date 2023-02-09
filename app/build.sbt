@@ -2,8 +2,9 @@ name := "salesMonitoring"
 
 scalaVersion := "3.2.1"
 
-Compile / scalaSource := baseDirectory.value / "src/main"
+enablePlugins(ScalaJSPlugin)
 
+Compile / scalaSource := baseDirectory.value / "src/main"
 Test / scalaSource := baseDirectory.value / "src/test"
 
 val zioVersion = "2.0.7"
