@@ -3,7 +3,7 @@ lazy val root = project
     .enablePlugins(ScalaJSPlugin)
     .settings(
         name := "sales-monitoring",
-        scalaVersion := "3.3.0",
+        scalaVersion := "3.3.1",
         Compile / scalaSource := baseDirectory.value / "src/main",
         Test / scalaSource := baseDirectory.value / "src/test",
         libraryDependencies ++= Seq(
@@ -12,7 +12,7 @@ lazy val root = project
         testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
     )
 
-val zioVersion = "2.0.15"
+val zioVersion = "2.0.19"
 
 val zio = Seq(
     "dev.zio" %% "zio" % zioVersion,
